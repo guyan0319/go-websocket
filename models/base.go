@@ -3,7 +3,7 @@ package models
 import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
-	"go-websocket/config"
+	"go-websocket/conf"
 	"log"
 )
 var mEngine *xorm.Engine
