@@ -1,10 +1,15 @@
 package main
 
-import "go-websocket/conf"
+import (
+	"github.com/gin-gonic/gin"
+	"go-websocket/conf"
+)
 
 func main() {
 	//初始化配置
 	InitConfig()
+	gin.SetMode(gin.ReleaseMode) //线上环境
+
 
 }
 
