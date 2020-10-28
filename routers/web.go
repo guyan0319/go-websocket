@@ -2,12 +2,14 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-websocket/controllers/home"
 	"go-websocket/controllers/user"
+	"go-websocket/servers/ws"
 )
 
 //注册web服务
 func Init(r *gin.Engine)  {
-	r.LoadHTMLGlob("views/**/*")
+	//r.LoadHTMLGlob("views/**/*")
 
 	// 用户组
 	userRouter := r.Group("/user")
@@ -20,5 +22,6 @@ func Init(r *gin.Engine)  {
 	{
 		homeRouter.GET("/index", home.Index)
 	}
+	//ws
 	r.GET("/ws",ws.WsHandler)
 }
