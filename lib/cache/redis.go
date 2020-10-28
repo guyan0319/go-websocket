@@ -8,7 +8,7 @@ import (
 
 var RedisClient *redis.Pool
 var RedisExpire = 86400 * 7
-var RedisSuf = "gosso.cache.redis."
+var RedisSuf = "go-websocket.cache.redis."
 func init() {
 	// 建立连接池
 	RedisClient = &redis.Pool{
@@ -31,4 +31,18 @@ func init() {
 			return c, nil
 		},
 	}
+}
+func GetInt64(key string) (int64,error) {
+	// 从池里获取连接
+	rc := RedisClient.Get()
+	// 用完后将连接放回连接池
+	defer rc.Close()
+	return redis.Int64(rc.Do("GET", key))
+}
+func GetBytes(key string) ([]byte,error) {
+	// 从池里获取连接
+	rc := RedisClient.Get()
+	// 用完后将连接放回连接池
+	defer rc.Close()
+	return redis.Bytes(rc.Do("GET", key))
 }

@@ -10,7 +10,10 @@ import (
 	"time"
 )
 
-
+const (
+	// 用户连接超时时间
+	heartbeatExpirationTime = 6 * 60
+)
 
 // Client is a websocket client
 type Client struct {
@@ -23,12 +26,6 @@ type Client struct {
 	HeartbeatTime uint64          // 用户上次心跳时间
 	LoginTime     uint64          // 登录时间
 }
-// 用户登录
-type login struct {
-	AppId  uint32
-	UserId string
-	Client *Client
-}
 
 // Message is return msg
 type Message struct {
@@ -36,13 +33,6 @@ type Message struct {
 	Recipient string `json:"recipient,omitempty"`
 	Content   string `json:"content,omitempty"`
 }
-// 获取用户key
-func GetUserKey(appId uint32, userId string) (key string) {
-	key = fmt.Sprintf("%d_%s", appId, userId)
-
-	return
-}
-
 
 func (c *Client) Read() {
 	defer func() {
