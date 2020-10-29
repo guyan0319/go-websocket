@@ -154,5 +154,11 @@ func (c *Client) IsLogin() (isLogin bool) {
 	return
 }
 
+// 读取客户端数据
+func (c *Client) GetKey() (key string) {
+	key = GetUserKey(c.AppId, c.UserId)
+
+	return
+}
 
 

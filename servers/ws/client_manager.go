@@ -3,6 +3,7 @@ package ws
 import (
 	"fmt"
 	"go-websocket/lib/cache"
+	"go-websocket/models"
 	"sync"
 	"time"
 )
@@ -106,9 +107,8 @@ func (manager *ClientManager) EventLogin(login *login) {
 
 	fmt.Println("EventLogin 用户登录", client.Addr, login.AppId, login.UserId)
 
-	orderId := helper.GetOrderIdTime()
+	orderId := GetMsgIdTime()
 	SendUserMessageAll(login.AppId, login.UserId, orderId, models.MessageCmdEnter, "哈喽~")
-
 }
 
 // 用户断开连接
@@ -132,13 +132,13 @@ func (manager *ClientManager) EventUnregister(client *Client) {
 	fmt.Println("EventUnregister 用户断开连接", client.Addr, client.AppId, client.UserId)
 
 	if client.UserId != "" {
-		orderId := helper.GetOrderIdTime()
-		SendUserMessageAll(client.AppId, client.UserId, orderId, models.MessageCmdExit, "用户已经离开~")
+		msgId := GetMsgIdTime()
+		_,_=SendUserMessageAll(client.AppId, client.UserId,msgId, models.MessageCmdExit, "用户已经离开~")
 	}
 }
 
 // 管道处理程序
-func (manager *ClientManager) start() {
+func (manager *ClientManager) Start() {
 	for {
 		select {
 		case conn := <-manager.Register:

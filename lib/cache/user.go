@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis"
-	"go-websocket/lib/cache"
+	"go-websocket/models"
 )
 
 const (
@@ -27,13 +27,10 @@ func getUserOnlineKey(userKey string) (key string) {
 }
 
 func GetUserOnlineInfo(userKey string) (userOnline *models.UserOnline, err error) {
-	// 从池里获取连接
-	rc := cache.RedisClient.Get()
-	// 用完后将连接放回连接池
-	defer rc.Close()
+
 	key := getUserOnlineKey(userKey)
 
-	data, err := rc.Get(key).Bytes()
+	data, err := GetBytes(key)
 	if err != nil {
 		if err == redis.Nil {
 			fmt.Println("GetUserOnlineInfo", userKey, err)
@@ -62,7 +59,8 @@ func GetUserOnlineInfo(userKey string) (userOnline *models.UserOnline, err error
 // 设置用户在线数据
 func SetUserOnlineInfo(userKey string, userOnline *models.UserOnline) (err error) {
 
-	redisClient := redislib.GetClient()
+	redisClient := RedisClient.Get()
+
 	key := getUserOnlineKey(userKey)
 
 	valueByte, err := json.Marshal(userOnline)
@@ -72,7 +70,7 @@ func SetUserOnlineInfo(userKey string, userOnline *models.UserOnline) (err error
 		return
 	}
 
-	_, err = redisClient.Do("setEx", key, userOnlineCacheTime, string(valueByte)).Result()
+	_, err = redisClient.Do("setEx", key, userOnlineCacheTime, string(valueByte))
 	if err != nil {
 		fmt.Println("设置用户在线数据 ", key, err)
 

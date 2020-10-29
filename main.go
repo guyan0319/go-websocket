@@ -4,28 +4,20 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-websocket/conf"
 	"go-websocket/routers"
+	"go-websocket/servers/ws"
 )
 
 func main() {
+	gin.SetMode(gin.DebugMode) // 开发环境
+	//gin.SetMode(gin.ReleaseMode) //线上环境
 	//初始化配置
-	InitConfig()
-	gin.SetMode(gin.ReleaseMode) //线上环境
+	conf.InitConfig()
 	r := gin.Default()
 	// 初始化web路由
 	routers.Init(r)
+	//启动websocket
+	go ws.Manager.Start()
+	//启动http
+	r.Run(":"+conf.Cfg.Port) // listen and serve on 0.0.0.0:8282
 
-
-
-
-
-
-
-
-}
-
-func InitConfig() {
-	c := conf.Config{}
-	c.Routes = []string{"/ping", "/renewal", "/login", "/login/mobile", "/sendsms", "/signup/mobile", "/signup/mobile/exist"}
-	c.OpenJwt = true //开启jwt
-	conf.Set(c)
 }

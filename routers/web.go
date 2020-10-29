@@ -9,7 +9,7 @@ import (
 
 //注册web服务
 func Init(r *gin.Engine)  {
-	//r.LoadHTMLGlob("views/**/*")
+	r.LoadHTMLGlob("view/**/*")
 
 	// 用户组
 	userRouter := r.Group("/user")

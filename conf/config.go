@@ -10,6 +10,7 @@ type Config struct {
 	Super string
 	RedisPre string
 	Host string
+	Port string
 	OpenJwt bool
 	Routes []string
 }
@@ -26,6 +27,7 @@ func  Set(cfg Config) {
 	Cfg.Token=setDefault(cfg.Token,"","token")
 	Cfg.Super=setDefault(cfg.Super,"","admin")//超级账户
 	Cfg.Host=setDefault(cfg.Host,"","http://localhost:8282")//域名
+	Cfg.Port=setDefault(cfg.Port,"","8282")//域名
 	Cfg.Routes=cfg.Routes
 	Cfg.OpenJwt=cfg.OpenJwt
 	mutex.Unlock()
@@ -35,4 +37,11 @@ func setDefault( value,def ,defValue string) string {
 		return defValue
 	}
 	return value
+}
+
+func InitConfig() {
+	c := Config{}
+	c.Routes = []string{"/ping", "/renewal", "/login", "/login/mobile", "/sendsms", "/signup/mobile", "/signup/mobile/exist"}
+	c.OpenJwt = true //开启jwt
+	Set(c)
 }
