@@ -87,9 +87,7 @@ func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
 // 用户建立连接事件
 func (manager *ClientManager) EventRegister(client *Client) {
 	manager.AddClients(client)
-
 	fmt.Println("EventRegister 用户建立连接", client.Addr)
-
 	// client.Send <- []byte("连接成功")
 }
 

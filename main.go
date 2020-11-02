@@ -15,6 +15,8 @@ func main() {
 	r := gin.Default()
 	// 初始化web路由
 	routers.Init(r)
+	routers.WebsocketInit()
+
 	//启动websocket
 	go ws.Manager.Start()
 	//启动http

@@ -41,7 +41,7 @@ func setDefault( value,def ,defValue string) string {
 
 func InitConfig() {
 	c := Config{}
-	c.Routes = []string{"/ping", "/renewal", "/login", "/login/mobile", "/sendsms", "/signup/mobile", "/signup/mobile/exist"}
+	c.Routes = []string{"/ping"}
 	c.OpenJwt = true //开启jwt
 	Set(c)
 }

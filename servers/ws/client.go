@@ -79,6 +79,7 @@ func WsHandler(c *gin.Context) {
 		http.NotFound(c.Writer, c.Request)
 		return
 	}
+	conn.CloseHandler()
 	fmt.Println("webSocket 建立连接:", conn.RemoteAddr().String())
 	currentTime := uint64(time.Now().Unix())
 	//可以添加用户信息验证

@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Golang Chat</title>
+    <title>Golang 一对一聊天 </title>
 
     <script src="http://libs.baidu.com/jquery/1.4.2/jquery.min.js"></script>
     <meta charset="UTF-8" />
@@ -49,7 +49,6 @@
                     appendLog($("<div><b>Connection Closed.</b></div>"))
                 }
                 conn.onmessage = function(evt) {
-
                     appendLog($("<div/>").text(evt.data))
                 }
             } else {

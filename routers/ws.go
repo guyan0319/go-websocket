@@ -1,7 +1,9 @@
 package routers
 
+import "go-websocket/servers/ws"
+
 func WebsocketInit()  {
-	//websocket.Register("login", websocket.LoginController)
+	ws.Register("login", ws.LoginController)
 	//websocket.Register("heartbeat", websocket.HeartbeatController)
 }
 
