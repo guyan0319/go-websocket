@@ -5,48 +5,50 @@ import (
 	"fmt"
 	"github.com/go-redis/redis"
 	"go-websocket/lib/cache"
-	common "go-websocket/lib/response"
-	"go-websocket/models"
+	"go-websocket/lib/response"
+	"go-websocket/servers/msgs"
 	"time"
 )
 
 // 用户登录
 func LoginController(client *Client, seq string, message []byte) (code uint32, msg string, data interface{}) {
 
-	code = common.OK
+	code = response.OK
 	currentTime := uint64(time.Now().Unix())
-
-	request := &models.Login{}
+	request := &msgs.Login{}
 	if err := json.Unmarshal(message, request); err != nil {
-		code = common.ParameterIllegal
+		code = response.ParameterIllegal
 		fmt.Println("用户登录 解析数据失败", seq, err)
-
 		return
 	}
-
-	fmt.Println("webSocket_request 用户登录", seq, "ServiceToken", request.ServiceToken)
-
-	if request.UserId == "" || len(request.UserId) >= 20 {
-		code = common.UnauthorizedUserId
+	if !request.CheckLogin() {
+		code = response.UnauthorizedUserId
 		fmt.Println("用户登录 非法的用户", seq, request.UserId)
 
 		return
 	}
+	if	!request.CheckToken(){
+		code = response.Unauthorized
+		fmt.Println("用户登录 未授权", seq, request.UserId)
+		return
+	}
+	fmt.Println("webSocket_request 用户登录", seq, "Token", request.Token)
 
 	if !InAppIds(request.AppId) {
-		code = common.Unauthorized
+		code = response.Unauthorized
 		fmt.Println("用户登录 不支持的平台", seq, request.AppId)
 
 		return
 	}
 
+	//处理登录
 	client.Login(request.AppId, request.UserId, currentTime)
 
 	// 存储数据
-	userOnline := models.UserLogin(serverIp, serverPort, request.AppId, request.UserId, client.Addr, currentTime)
+	userOnline := msgs.UserLogin(serverIp, serverPort, request.AppId, request.UserId, client.Addr, currentTime)
 	err := cache.SetUserOnlineInfo(client.GetKey(), userOnline)
 	if err != nil {
-		code = common.ServerError
+		code = response.ServerError
 		fmt.Println("用户登录 SetUserOnlineInfo", seq, err)
 
 		return
@@ -58,7 +60,7 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 		UserId: request.UserId,
 		Client: client,
 	}
-	clientManager.Login <- login
+	Manager.Login <- login
 
 	fmt.Println("用户登录 成功", seq, client.Addr, request.UserId)
 
@@ -68,12 +70,12 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 // 心跳接口
 func HeartbeatController(client *Client, seq string, message []byte) (code uint32, msg string, data interface{}) {
 
-	code = common.OK
+	code = response.OK
 	currentTime := uint64(time.Now().Unix())
 
-	request := &models.HeartBeat{}
+	request := &msgs.HeartBeat{}
 	if err := json.Unmarshal(message, request); err != nil {
-		code = common.ParameterIllegal
+		code = response.ParameterIllegal
 		fmt.Println("心跳接口 解析数据失败", seq, err)
 
 		return
@@ -83,7 +85,7 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 
 	if !client.IsLogin() {
 		fmt.Println("心跳接口 用户未登录", client.AppId, client.UserId, seq)
-		code = common.NotLoggedIn
+		code = response.NotLoggedIn
 
 		return
 	}
@@ -91,12 +93,12 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 	userOnline, err := cache.GetUserOnlineInfo(client.GetKey())
 	if err != nil {
 		if err == redis.Nil {
-			code = common.NotLoggedIn
+			code = response.NotLoggedIn
 			fmt.Println("心跳接口 用户未登录", seq, client.AppId, client.UserId)
 
 			return
 		} else {
-			code = common.ServerError
+			code = response.ServerError
 			fmt.Println("心跳接口 GetUserOnlineInfo", seq, client.AppId, client.UserId, err)
 
 			return
@@ -107,7 +109,7 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 	userOnline.Heartbeat(currentTime)
 	err = cache.SetUserOnlineInfo(client.GetKey(), userOnline)
 	if err != nil {
-		code = common.ServerError
+		code = response.ServerError
 		fmt.Println("心跳接口 SetUserOnlineInfo", seq, client.AppId, client.UserId, err)
 
 		return

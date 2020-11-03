@@ -3,7 +3,7 @@ package ws
 import (
 	"fmt"
 	"go-websocket/lib/cache"
-	"go-websocket/models"
+	"go-websocket/servers/msgs"
 	"time"
 )
 
@@ -27,7 +27,7 @@ func SendUserMessageAll(appId uint32, userId string, msgId, cmd, message string)
 
 	for _, server := range servers {
 		if IsLocal(server) {
-			data := models.GetMsgData(userId, msgId, cmd, message)
+			data := msgs.GetMsgData(userId, msgId, cmd, message)
 			AllSendMessages(appId, userId, data)
 		} else {
 			//grpcclient.SendMsgAll(server, msgId, appId, userId, cmd, message)

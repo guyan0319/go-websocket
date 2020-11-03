@@ -5,7 +5,7 @@
 * Time: 12:11
  */
 
-package common
+package response
 
 type JsonResult struct {
 	Code uint32      `json:"code"`

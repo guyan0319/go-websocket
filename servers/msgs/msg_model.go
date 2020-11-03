@@ -1,13 +1,6 @@
-/**
-* Created by GoLand.
-* User: link1st
-* Date: 2019-08-01
-* Time: 10:40
- */
+package msgs
 
-package models
-
-import common "go-websocket/lib/response"
+import "go-websocket/lib/response"
 const (
 	MessageTypeText = "text"
 
@@ -37,7 +30,7 @@ func NewTestMsg(from string, Msg string) (message *Message) {
 
 func getTextMsgData(cmd, uuId, msgId, message string) string {
 	textMsg := NewTestMsg(uuId, message)
-	head := NewResponseHead(msgId, cmd, common.OK, "Ok", textMsg)
+	head := NewResponseHead(msgId, cmd, response.OK, "Ok", textMsg)
 
 	return head.String()
 }
