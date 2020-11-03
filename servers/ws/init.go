@@ -1,7 +1,7 @@
 package ws
 
 import (
-	"go-websocket/models"
+	"go-websocket/servers/msgs"
 )
 
 var (
@@ -16,13 +16,13 @@ func GetAppIds() []uint32 {
 	return appIds
 }
 
-func GetServer() (server *models.Server) {
-	server = models.NewServer(serverIp, serverPort)
+func GetServer() (server *msgs.Server) {
+	server = msgs.NewServer(serverIp, serverPort)
 
 	return
 }
 
-func IsLocal(server *models.Server) (isLocal bool) {
+func IsLocal(server *msgs.Server) (isLocal bool) {
 	if server.Ip == serverIp && server.Port == serverPort {
 		isLocal = true
 	}

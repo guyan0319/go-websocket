@@ -21,7 +21,7 @@ func getServersHashKey() (key string) {
 }
 
 // 设置服务器信息
-func SetServerInfo(server *models.Server, currentTime uint64) (err error) {
+func SetServerInfo(server *msgs.Server, currentTime uint64) (err error) {
 	key := getServersHashKey()
 
 	value := fmt.Sprintf("%d", currentTime)
@@ -45,7 +45,7 @@ func SetServerInfo(server *models.Server, currentTime uint64) (err error) {
 }
 
 // 下线服务器信息
-func DelServerInfo(server *models.Server) (err error) {
+func DelServerInfo(server *msgs.Server) (err error) {
 	key := getServersHashKey()
 	redisClient := RedisClient.Get()
 	number, err := redisClient.Do("hDel", key, server.String())
@@ -65,9 +65,9 @@ func DelServerInfo(server *models.Server) (err error) {
 	return
 }
 
-func GetServerAll(currentTime uint64) (servers []*models.Server, err error) {
+func GetServerAll(currentTime uint64) (servers []*msgs.Server, err error) {
 
-	servers = make([]*models.Server, 0)
+	servers = make([]*msgs.Server, 0)
 	key := getServersHashKey()
 
 	// 从池里获取连接
@@ -93,7 +93,7 @@ func GetServerAll(currentTime uint64) (servers []*models.Server, err error) {
 			continue
 		}
 
-		server, err := models.StringToServer(key)
+		server, err := msgs.StringToServer(key)
 		if err != nil {
 			fmt.Println("GetServerAll", key, err)
 

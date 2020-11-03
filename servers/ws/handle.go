@@ -3,8 +3,8 @@ package ws
 import (
 	"encoding/json"
 	"fmt"
-	common "go-websocket/lib/response"
-	"go-websocket/models"
+	"go-websocket/lib/response"
+	"go-websocket/servers/msgs"
 	"sync"
 )
 
@@ -42,7 +42,7 @@ func Handle(client *Client, message []byte) {
 			fmt.Println("处理数据 stop", r)
 		}
 	}()
-	request := &models.Request{}
+	request := &msgs.Request{}
 
 	err := json.Unmarshal(message, request)
 	if err != nil {
@@ -75,13 +75,13 @@ func Handle(client *Client, message []byte) {
 	if value, ok := gethandlerMap(cmd); ok {
 		code, msg, data = value(client, seq, requestData)
 	} else {
-		code = common.RoutingNotExist
+		code = response.RoutingNotExist
 		fmt.Println("处理数据 路由不存在", client.Addr, "cmd", cmd)
 	}
 
-	msg = common.GetErrorMessage(code, msg)
+	msg = response.GetErrorMessage(code, msg)
 
-	responseHead := models.NewResponseHead(seq, cmd, code, msg, data)
+	responseHead := msgs.NewResponseHead(seq, cmd, code, msg, data)
 
 	headByte, err := json.Marshal(responseHead)
 	if err != nil {

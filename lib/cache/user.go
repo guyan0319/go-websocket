@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis"
-	"go-websocket/models"
+	"go-websocket/servers/msgs"
 )
 
 const (
@@ -26,7 +26,7 @@ func getUserOnlineKey(userKey string) (key string) {
 	return
 }
 
-func GetUserOnlineInfo(userKey string) (userOnline *models.UserOnline, err error) {
+func GetUserOnlineInfo(userKey string) (userOnline *msgs.UserOnline, err error) {
 
 	key := getUserOnlineKey(userKey)
 
@@ -43,7 +43,7 @@ func GetUserOnlineInfo(userKey string) (userOnline *models.UserOnline, err error
 		return
 	}
 
-	userOnline = &models.UserOnline{}
+	userOnline = &msgs.UserOnline{}
 	err = json.Unmarshal(data, userOnline)
 	if err != nil {
 		fmt.Println("获取用户在线数据 json Unmarshal", userKey, err)
@@ -57,7 +57,7 @@ func GetUserOnlineInfo(userKey string) (userOnline *models.UserOnline, err error
 }
 
 // 设置用户在线数据
-func SetUserOnlineInfo(userKey string, userOnline *models.UserOnline) (err error) {
+func SetUserOnlineInfo(userKey string, userOnline *msgs.UserOnline) (err error) {
 
 	redisClient := RedisClient.Get()
 
