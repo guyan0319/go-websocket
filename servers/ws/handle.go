@@ -60,7 +60,7 @@ func Handle(client *Client, message []byte) {
 	}
 
 	seq := request.Seq
-	cmd := request.Cmd
+	action := request.Action
 
 	var (
 		code uint32
@@ -69,19 +69,19 @@ func Handle(client *Client, message []byte) {
 	)
 
 	// request
-	fmt.Println("acc_request", cmd, client.Addr)
+	fmt.Println("acc_request", action, client.Addr)
 
 	// 采用 map 注册的方式
-	if value, ok := gethandlerMap(cmd); ok {
+	if value, ok := gethandlerMap(action); ok {
 		code, msg, data = value(client, seq, requestData)
 	} else {
 		code = response.RoutingNotExist
-		fmt.Println("处理数据 路由不存在", client.Addr, "cmd", cmd)
+		fmt.Println("处理数据 路由不存在", client.Addr, "action", action)
 	}
 
 	msg = response.GetErrorMessage(code, msg)
 
-	responseHead := msgs.NewResponseHead(seq, cmd, code, msg, data)
+	responseHead := msgs.NewResponseHead(seq, action, code, msg, data)
 
 	headByte, err := json.Marshal(responseHead)
 	if err != nil {
@@ -92,7 +92,7 @@ func Handle(client *Client, message []byte) {
 
 	client.SendMsg(headByte)
 
-	fmt.Println("acc_response send", client.Addr, client.AppId, client.UserId, "cmd", cmd, "code", code)
+	fmt.Println("acc_response send", client.Addr, client.AppId, client.UserId, "action", action, "code", code)
 
 	return
 }

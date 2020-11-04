@@ -14,7 +14,7 @@ func GetMsgIdTime() (msgId string) {
 }
 
 // 给全体用户发消息
-func SendUserMessageAll(appId uint32, userId string, msgId, cmd, message string) (sendResults bool, err error) {
+func SendUserMessageAll(appId uint32, userId string, msgId, action, message string) (sendResults bool, err error) {
 	sendResults = true
 
 	currentTime := uint64(time.Now().Unix())
@@ -27,10 +27,10 @@ func SendUserMessageAll(appId uint32, userId string, msgId, cmd, message string)
 
 	for _, server := range servers {
 		if IsLocal(server) {
-			data := msgs.GetMsgData(userId, msgId, cmd, message)
+			data := msgs.GetMsgData(userId, msgId, action, message)
 			AllSendMessages(appId, userId, data)
 		} else {
-			//grpcclient.SendMsgAll(server, msgId, appId, userId, cmd, message)
+			//grpcclient.SendMsgAll(server, msgId, appId, userId, action, message)
 		}
 	}
 

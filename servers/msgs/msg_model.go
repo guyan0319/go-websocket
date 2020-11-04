@@ -4,9 +4,9 @@ import "go-websocket/lib/response"
 const (
 	MessageTypeText = "text"
 
-	MessageCmdMsg = "msg"
-	MessageCmdEnter = "enter"
-	MessageCmdExit = "exit"
+	MessageActionMsg = "msg"
+	MessageActionEnter = "enter"
+	MessageActionExit = "exit"
 )
 
 // 消息的定义
@@ -28,17 +28,17 @@ func NewTestMsg(from string, Msg string) (message *Message) {
 	return
 }
 
-func getTextMsgData(cmd, uuId, msgId, message string) string {
+func getTextMsgData(action, uuId, msgId, message string) string {
 	textMsg := NewTestMsg(uuId, message)
-	head := NewResponseHead(msgId, cmd, response.OK, "Ok", textMsg)
+	head := NewResponseHead(msgId, action, response.OK, "Ok", textMsg)
 
 	return head.String()
 }
 
 // 文本消息
-func GetMsgData(uuId, msgId, cmd, message string) string {
+func GetMsgData(uuId, msgId, action, message string) string {
 
-	return getTextMsgData(cmd, uuId, msgId, message)
+	return getTextMsgData(action, uuId, msgId, message)
 }
 
 // 文本消息

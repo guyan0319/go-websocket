@@ -7,12 +7,13 @@
     <script type="text/javascript">
 
         $(function() {
+            function rand(minNum, maxNum) {
+                return Math.floor(Math.random()*(minNum - maxNum) + maxNum);
+            }
             function sendId() {
-
-                let timeStamp = currentTime();
-                let randId = randomNumber(100000, 999999);
+                let timeStamp = (new Date()).valueOf();
+                let randId = rand(100000, 999999);
                 let id = timeStamp + "-" + randId;
-
                 return id
             }
             function getUrlParam(name)
@@ -55,8 +56,8 @@
                 conn = new WebSocket("ws://localhost:8282/ws?uid="+uid+"&to_uid="+to_uid+"&appname=1");
                 ws.onopen = function(evt) {
                     console.log("Connection open ...");
-                    console.log("用户准备登陆:" + person);
-                    ws.send('{"seq":"' + sendId() + '","action":"login","data":{"userId":"' + uid + '","appId":101}}');
+                    console.log("用户准备登陆:" + uid);
+                    ws.send('{"seq":"' + sendId() + '","action":"login","data":{"userId":"' + uid + '","appId":1}}');
 
                     // 定时心跳
                     setInterval(heartbeat, 30 * 1000)
@@ -70,8 +71,8 @@
                 }
                 // 心跳
                 function heartbeat() {
-                    console.log("定时心跳:" + person);
-                    ws.send('{"seq":"' + sendId() + '","cmd":"heartbeat","data":{}}');
+                    console.log("定时心跳:" + uid);
+                    ws.send('{"seq":"' + sendId() + '","action":"heartbeat","data":{}}');
 
                 }
             } else {

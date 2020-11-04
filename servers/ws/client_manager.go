@@ -106,7 +106,7 @@ func (manager *ClientManager) EventLogin(login *login) {
 	fmt.Println("EventLogin 用户登录", client.Addr, login.AppId, login.UserId)
 
 	orderId := GetMsgIdTime()
-	SendUserMessageAll(login.AppId, login.UserId, orderId, msgs.MessageCmdEnter, "哈喽~")
+	SendUserMessageAll(login.AppId, login.UserId, orderId, msgs.MessageActionEnter, "哈喽~")
 }
 
 // 用户断开连接
@@ -131,7 +131,7 @@ func (manager *ClientManager) EventUnregister(client *Client) {
 
 	if client.UserId != "" {
 		msgId := GetMsgIdTime()
-		_,_=SendUserMessageAll(client.AppId, client.UserId,msgId, msgs.MessageCmdExit, "用户已经离开~")
+		_,_=SendUserMessageAll(client.AppId, client.UserId,msgId, msgs.MessageActionExit, "用户已经离开~")
 	}
 }
 
