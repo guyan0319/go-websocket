@@ -36,7 +36,6 @@ func gethandlerMap(key string) (value DisposeFunc, ok bool) {
 func Handle(client *Client, message []byte) {
 
 	fmt.Println("处理数据", client.Addr, string(message))
-
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println("处理数据 stop", r)
@@ -69,9 +68,9 @@ func Handle(client *Client, message []byte) {
 	)
 
 	// request
-	fmt.Println("acc_request", action, client.Addr)
+	fmt.Println("请求来源", action, client.Addr)
 
-	// 采用 map 注册的方式
+	// 获取所有处理方式
 	if value, ok := gethandlerMap(action); ok {
 		code, msg, data = value(client, seq, requestData)
 	} else {
@@ -91,8 +90,7 @@ func Handle(client *Client, message []byte) {
 	}
 
 	client.SendMsg(headByte)
-
-	fmt.Println("acc_response send", client.Addr, client.AppId, client.UserId, "action", action, "code", code)
+	fmt.Println("响应：", client.Addr, client.AppId, client.UserId, "action", action, "code", code)
 
 	return
 }

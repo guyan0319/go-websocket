@@ -22,6 +22,8 @@ type Client struct {
 	Send          chan []byte     // 待发送的数据
 	AppId         uint32          // 登录的平台Id
 	UserId        string          // 用户Id
+	ToUid         string          // 接收用户Id
+	GroupsId      string          // 聊天组Id
 	FirstTime     uint64          // 首次连接事件
 	HeartbeatTime uint64          // 用户上次心跳时间
 	LoginTime     uint64          // 登录时间
@@ -55,7 +57,7 @@ func (c *Client) Read() {
 		}
 		//处理客户端信息
 		log.Printf("读取到客户端的信息:%s", string(message))
-		Handle(c,message)
+		Handle(c, message)
 	}
 }
 
@@ -166,5 +168,3 @@ func (c *Client) GetKey() (key string) {
 
 	return
 }
-
-

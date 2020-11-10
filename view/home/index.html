@@ -27,6 +27,10 @@
             var log = $("#log");
             uid=getUrlParam("uid");
             to_uid=getUrlParam("to_uid");
+            groups_id=getUrlParam("groups_id");
+            if (to_uid!=""){
+                groups_id=0
+            }
 
             function appendLog(msg) {
                 var d = log[0]
@@ -57,7 +61,7 @@
                 conn.onopen = function(evt) {
                     console.log("Connection open ...");
                     console.log("用户准备登陆:" + uid);
-                    conn.send('{"seq":"' + sendId() + '","action":"login","data":{"userId":"' + uid + '","appId":1}}');
+                    conn.send('{"seq":"' + sendId() + '","action":"login","data":{"userId":"' + uid + '","appId":1,"toUid":'+to_uid+',"groupsId":'+groups_id+'}}');
 
                     // 定时心跳
                     setInterval(heartbeat, 30 * 1000)

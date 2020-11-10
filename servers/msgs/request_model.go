@@ -12,6 +12,8 @@ type Login struct {
 	Token  string `json:"Token"` // token
 	AppId  uint32 `json:"appId,omitempty"`
 	UserId string `json:"userId,omitempty"`
+	ToUid string `json:"toUid,omitempty"`
+	GroupsId string `json:"groupsId,omitempty"`
 }
 
 // 心跳请求数据
