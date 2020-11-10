@@ -36,6 +36,11 @@ type Message struct {
 
 func (c *Client) Read() {
 	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("read stop", string(debug.Stack()), r)
+		}
+	}()
+	defer func() {
 		Manager.Unregister <- c
 		c.Socket.Close()
 	}()
@@ -48,8 +53,9 @@ func (c *Client) Read() {
 			c.Socket.Close()
 			break
 		}
+		//处理客户端信息
 		log.Printf("读取到客户端的信息:%s", string(message))
-		Manager.Broadcast <- message
+		Handle(c,message)
 	}
 }
 
@@ -66,14 +72,13 @@ func (c *Client) Write() {
 				return
 			}
 			log.Printf("发送到到客户端的信息:%s", string(message))
-
 			c.Socket.WriteMessage(websocket.TextMessage, message)
 		}
 	}
 }
 
 //TestHandler socket 连接 中间件 作用:升级协议,用户验证,自定义信息等
-func WsHandler(c *gin.Context) {
+func WsPage(c *gin.Context) {
 	conn, err := (&websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}).Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		http.NotFound(c.Writer, c.Request)

@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	appIds        = []uint32{101, 102} // 全部的平台
+	appIds        = []uint32{1, 2} // 全部的平台
 
 	serverIp   string
 	serverPort string

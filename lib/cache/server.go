@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gomodule/redigo/redis"
-	"go-websocket/models"
+	"go-websocket/servers/msgs"
 	"strconv"
 )
 

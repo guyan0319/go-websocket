@@ -203,13 +203,10 @@ func GetUserClient(appId uint32, userId string) (client *Client) {
 
 // 定时清理超时连接
 func ClearTimeoutConnections() {
-
 	currentTime := uint64(time.Now().Unix())
-
 	for client := range Manager.Clients {
 		if client.IsHeartbeatTimeout(currentTime) {
 			fmt.Println("心跳时间超时 关闭连接", client.Addr, client.UserId, client.LoginTime, client.HeartbeatTime)
-
 			client.Socket.Close()
 		}
 	}

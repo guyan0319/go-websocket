@@ -23,5 +23,5 @@ func Init(r *gin.Engine)  {
 		homeRouter.GET("/index", home.Index)
 	}
 	//ws
-	r.GET("/ws",ws.WsHandler)
+	r.GET("/ws",ws.WsPage)
 }
