@@ -117,3 +117,54 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 
 	return
 }
+
+// 发送消息
+func SendUserMsgController(client *Client, seq string, message []byte) (code uint32, msg string, data interface{}) {
+
+	code = response.OK
+	currentTime := uint64(time.Now().Unix())
+
+	request := &msgs.HeartBeat{}
+	if err := json.Unmarshal(message, request); err != nil {
+		code = response.ParameterIllegal
+		fmt.Println("心跳接口 解析数据失败", seq, err)
+
+		return
+	}
+
+	fmt.Println("webSocket_request 心跳接口", client.AppId, client.UserId)
+
+	if !client.IsLogin() {
+		fmt.Println("心跳接口 用户未登录", client.AppId, client.UserId, seq)
+		code = response.NotLoggedIn
+
+		return
+	}
+
+	userOnline, err := cache.GetUserOnlineInfo(client.GetKey())
+	if err != nil {
+		if err == redis.Nil {
+			code = response.NotLoggedIn
+			fmt.Println("心跳接口 用户未登录", seq, client.AppId, client.UserId)
+
+			return
+		} else {
+			code = response.ServerError
+			fmt.Println("心跳接口 GetUserOnlineInfo", seq, client.AppId, client.UserId, err)
+
+			return
+		}
+	}
+
+	client.Heartbeat(currentTime)
+	userOnline.Heartbeat(currentTime)
+	err = cache.SetUserOnlineInfo(client.GetKey(), userOnline)
+	if err != nil {
+		code = response.ServerError
+		fmt.Println("心跳接口 SetUserOnlineInfo", seq, client.AppId, client.UserId, err)
+
+		return
+	}
+
+	return
+}
