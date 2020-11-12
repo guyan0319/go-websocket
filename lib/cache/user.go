@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	userOnlinePrefix    = "acc:user:online:" // 用户在线状态
+	userOnlinePrefix    = "user:online:" // 用户在线状态
 	userOnlineCacheTime = 24 * 60 * 60
 )
 

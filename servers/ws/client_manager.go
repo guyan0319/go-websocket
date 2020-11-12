@@ -14,7 +14,7 @@ type ClientManager struct {
 	ClientsLock sync.RWMutex       // 读写锁
 	UserClients    map[string]*Client
 	UserClientsLock    sync.RWMutex       // 读写锁
-	Broadcast  chan []byte //广播
+	Broadcast  chan *msgs.SendUserMsg //广播
 	Register   chan *Client  //连接
 	Login       chan *login        // 用户登录处理
 	Unregister chan *Client //退出
@@ -23,7 +23,7 @@ type ClientManager struct {
 var Manager = ClientManager{
 	Clients:    make(map[*Client]bool),
 	UserClients:      make(map[string]*Client),
-	Broadcast:  make(chan []byte),
+	Broadcast:  make(chan *msgs.SendUserMsg),
 	Register:   make(chan *Client),
 	Login:      make(chan *login),
 	Unregister: make(chan *Client),
@@ -82,6 +82,12 @@ func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
 			conn.SendMsg(message)
 		}
 	}
+}
+
+// 用户建立连接事件
+func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
+
+	// client.Send <- []byte("连接成功")
 }
 
 // 用户建立连接事件
@@ -152,14 +158,15 @@ func (manager *ClientManager) Start() {
 			manager.EventUnregister(conn)
 
 		case message := <-manager.Broadcast:
-			// 广播事件
-			for conn := range manager.Clients {
-				select {
-				case conn.Send <- message:
-				default:
-					close(conn.Send)
-				}
-			}
+			//// 广播事件
+			manager.EventSendUserMsg(message)
+			//for conn := range manager.Clients {
+			//	select {
+			//	case conn.Send <- message:
+			//	default:
+			//		close(conn.Send)
+			//	}
+			//}
 		}
 	}
 }
