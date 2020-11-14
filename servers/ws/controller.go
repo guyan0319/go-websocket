@@ -131,17 +131,15 @@ func SendUserMsgController(client *Client, seq string, message []byte) (code uin
 
 		return
 	}
-
 	fmt.Println(currentTime)
 
 	// 处理发送信息
-	broadcast := &msgs.SendUserMsg{
+	sendUsersMsg := &msgs.SendUserMsg{
 		AppId:   client.AppId,
 		UserId:  client.UserId,
 		MsgId:   request.MsgId,
 		Message: request.Message,
 	}
-	Manager.Broadcast <- broadcast
-
+	Manager.SendUserMsg <- sendUsersMsg
 	return
 }

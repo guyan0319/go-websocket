@@ -14,7 +14,7 @@ type ClientManager struct {
 	ClientsLock sync.RWMutex       // 读写锁
 	UserClients    map[string]*Client
 	UserClientsLock    sync.RWMutex       // 读写锁
-	Broadcast  chan *msgs.SendUserMsg //广播
+	SendUserMsg  chan *msgs.SendUserMsg //广播消息
 	Register   chan *Client  //连接
 	Login       chan *login        // 用户登录处理
 	Unregister chan *Client //退出
@@ -23,7 +23,7 @@ type ClientManager struct {
 var Manager = ClientManager{
 	Clients:    make(map[*Client]bool),
 	UserClients:      make(map[string]*Client),
-	Broadcast:  make(chan *msgs.SendUserMsg),
+	SendUserMsg:  make(chan *msgs.SendUserMsg),
 	Register:   make(chan *Client),
 	Login:      make(chan *login),
 	Unregister: make(chan *Client),
@@ -86,6 +86,13 @@ func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
 
 // 用户建立连接事件
 func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
+	manager.ClientsLock.RLock()
+	defer manager.ClientsLock.RUnlock()
+   fmt.Println(message)
+
+
+
+
 
 	// client.Send <- []byte("连接成功")
 }
@@ -111,8 +118,8 @@ func (manager *ClientManager) EventLogin(login *login) {
 
 	fmt.Println("EventLogin 用户登录", client.Addr, login.AppId, login.UserId)
 
-	orderId := GetMsgIdTime()
-	SendUserMessageAll(login.AppId, login.UserId, orderId, msgs.MessageActionEnter, "哈喽~")
+	msgId := GetMsgIdTime()
+	SendUserMessageAll(login.AppId, login.UserId, msgId, msgs.MessageActionEnter, "哈喽~")
 }
 
 // 用户断开连接
@@ -157,16 +164,9 @@ func (manager *ClientManager) Start() {
 			// 断开连接事件
 			manager.EventUnregister(conn)
 
-		case message := <-manager.Broadcast:
-			//// 广播事件
-			manager.EventSendUserMsg(message)
-			//for conn := range manager.Clients {
-			//	select {
-			//	case conn.Send <- message:
-			//	default:
-			//		close(conn.Send)
-			//	}
-			//}
+		case sendUserMsg := <-manager.SendUserMsg:
+			//聊天室广播
+			manager.EventSendUserMsg(sendUserMsg)
 		}
 	}
 }
@@ -181,7 +181,7 @@ func GetManagerInfo(isDebug string) (managerInfo map[string]interface{}) {
 	managerInfo["chanRegisterLen"] = len(Manager.Register)
 	managerInfo["chanLoginLen"] = len(Manager.Login)
 	managerInfo["chanUnregisterLen"] = len(Manager.Unregister)
-	managerInfo["chanBroadcastLen"] = len(Manager.Broadcast)
+	managerInfo["chanBroadcastLen"] = len(Manager.SendUserMsg)
 
 	if isDebug == "true" {
 		clients := make([]string, 0)

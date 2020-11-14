@@ -102,7 +102,7 @@ func WsPage(c *gin.Context) {
 	Manager.Register <- client
 }
 
-// 读取客户端数据
+// 发送客户端数据
 func (c *Client) SendMsg(msg []byte) {
 
 	if c == nil {
