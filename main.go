@@ -15,6 +15,7 @@ func main() {
 	r := gin.Default()
 	// 初始化web路由
 	routers.Init(r)
+	//ws路由
 	routers.WebsocketInit()
 
 	//启动websocket

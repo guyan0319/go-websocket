@@ -10,4 +10,5 @@ require (
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/gorilla/websocket v1.4.2
 	github.com/kr/pretty v0.2.1 // indirect
+	github.com/pkg/errors v0.8.1
 )

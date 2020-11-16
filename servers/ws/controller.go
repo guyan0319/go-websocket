@@ -15,6 +15,7 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 
 	code = response.OK
 	currentTime := uint64(time.Now().Unix())
+	fmt.Println(string(message))
 	request := &msgs.Login{}
 	if err := json.Unmarshal(message, request); err != nil {
 		code = response.ParameterIllegal

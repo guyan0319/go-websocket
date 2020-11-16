@@ -9,7 +9,7 @@ type Request struct {
 
 // 接收用户登录请求数据
 type Login struct {
-	Token    string `json:"Token"` // token
+	Token    string `json:"aoken,omitempty"` // token
 	AppId    uint32 `json:"appId,omitempty"`
 	UserId   string `json:"userId,omitempty"`
 	ToUid    string `json:"toUid,omitempty"`

@@ -48,7 +48,8 @@
                 if (!msg.val()) {
                     return false;
                 }
-                var json = {"sender":uid,"recipient":to_uid,"content":msg.val(),"typemsg":"1","appname":"1"}; //创建对象；
+                var json = {"seq": sendId(),"action":"sendusermsg","data":{"userId":uid,"appId":1,"toUid":to_uid,"groupsId":groups_id,"message":msg.val()}}
+                // var json = {"sender":uid,"recipient":to_uid,"content":msg.val(),"typemsg":"1","appname":"1"}; //创建对象；
                 var jsonStr = JSON.stringify(json);       //转为JSON字符串
 
                 conn.send(jsonStr);
