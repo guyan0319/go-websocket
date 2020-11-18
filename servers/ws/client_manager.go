@@ -94,7 +94,7 @@ func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 	}
 	//一对一发送
 	if client.GroupsId=="0"{
-		SendUserMessageAll()
+		//SendUserMessageAll()
 
 	}else{
 	//聊天室广播

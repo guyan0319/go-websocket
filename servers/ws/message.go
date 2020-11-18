@@ -51,7 +51,6 @@ func SendUserMessageAll(appId uint32, userId string, msgId, action, message stri
 	servers, err := cache.GetServerAll(currentTime)
 	if err != nil {
 		fmt.Println("给全体用户发消息", err)
-
 		return
 	}
 

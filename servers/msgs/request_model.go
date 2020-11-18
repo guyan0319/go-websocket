@@ -28,6 +28,7 @@ type SendUserMsg struct {
 	ToUid    string `json:"toUid,omitempty"`
 	GroupsId string `json:"groupsId,omitempty"`
 	MsgId string `json:"msgId,omitempty"`
+	MsgTypeId string `json:"msgTypeId,omitempty"`//消息类型
     Message string `json:"message,omitempty"`
 }
 
