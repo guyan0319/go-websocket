@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	serversHashKey       = "acc:hash:servers" // 全部的服务器
+	serversHashKey       = "ws:hash:allservers" // 全部的服务器
 	serversHashCacheTime = 2 * 60 * 60        // key过期时间
 	serversHashTimeout   = 3 * 60             // 超时时间
 )

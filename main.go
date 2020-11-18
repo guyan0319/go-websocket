@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-websocket/conf"
 	"go-websocket/routers"
+	"go-websocket/servers/task"
 	"go-websocket/servers/ws"
 )
 
@@ -17,6 +18,9 @@ func main() {
 	routers.Init(r)
 	//ws路由
 	routers.WebsocketInit()
+
+	// 服务注册
+	task.ServerInit()
 
 	//启动websocket
 	go ws.Manager.Start()

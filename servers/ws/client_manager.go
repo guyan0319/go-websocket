@@ -88,9 +88,22 @@ func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
 func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 	manager.ClientsLock.RLock()
 	defer manager.ClientsLock.RUnlock()
-   fmt.Println(message)
+	fmt.Println(message.AppId)
+	fmt.Println(message.UserId)
+	client := Manager.GetUserClient(message.AppId, message.UserId)
+	fmt.Println(client,"fffffff")
+	fmt.Println(client.ToUid)
+	fmt.Println(client.GroupsId)
+	if client.ToUid=="" && client.GroupsId=="0"{
 
-
+	}
+	//data := msgs.GetTextMsgData(userId, msgId, message)
+	//
+	//// TODO::需要判断不在本机的情况
+	//sendResults, err = SendUserMessageLocal(appId, userId, data)
+	//if err != nil {
+	//	fmt.Println("给用户发送消息", appId, userId, err)
+	//}
 
 
 

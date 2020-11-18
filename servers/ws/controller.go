@@ -15,6 +15,7 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 
 	code = response.OK
 	currentTime := uint64(time.Now().Unix())
+	fmt.Println(message,"faaaaa")
 	request := &msgs.Login{}
 	if err := json.Unmarshal(message, request); err != nil {
 		code = response.ParameterIllegal
@@ -81,7 +82,7 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 		return
 	}
 
-	fmt.Println("webSocket_request 心跳接口", client.AppId, client.UserId)
+	//fmt.Println("webSocket_request 心跳接口", client.AppId, client.UserId)
 
 	if !client.IsLogin() {
 		fmt.Println("心跳接口 用户未登录", client.AppId, client.UserId, seq)
@@ -99,7 +100,7 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 			return
 		} else {
 			code = response.ServerError
-			fmt.Println("心跳接口 GetUserOnlineInfo", seq, client.AppId, client.UserId, err)
+			//fmt.Println("心跳接口 GetUserOnlineInfo", seq, client.AppId, client.UserId, err)
 
 			return
 		}
@@ -110,7 +111,7 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 	err = cache.SetUserOnlineInfo(client.GetKey(), userOnline)
 	if err != nil {
 		code = response.ServerError
-		fmt.Println("心跳接口 SetUserOnlineInfo", seq, client.AppId, client.UserId, err)
+		//fmt.Println("心跳接口 SetUserOnlineInfo", seq, client.AppId, client.UserId, err)
 
 		return
 	}
@@ -122,8 +123,7 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 func SendUserMsgController(client *Client, seq string, message []byte) (code uint32, msg string, data interface{}) {
 
 	code = response.OK
-	currentTime := uint64(time.Now().Unix())
-
+	//currentTime := uint64(time.Now().Unix())
 	request := &msgs.SendUserMsg{}
 	if err := json.Unmarshal(message, request); err != nil {
 		code = response.ParameterIllegal
@@ -131,13 +131,11 @@ func SendUserMsgController(client *Client, seq string, message []byte) (code uin
 
 		return
 	}
-	fmt.Println(currentTime)
-
 	// 处理发送信息
 	sendUsersMsg := &msgs.SendUserMsg{
 		AppId:   client.AppId,
 		UserId:  client.UserId,
-		MsgId:   request.MsgId,
+		MsgId:   seq,
 		Message: request.Message,
 	}
 	Manager.SendUserMsg <- sendUsersMsg
