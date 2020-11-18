@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	"go-websocket/servers/msgs"
 	"log"
 	"net/http"
 	"runtime/debug"
@@ -125,9 +126,11 @@ func (c *Client) close() {
 }
 
 // 用户登录
-func (c *Client) Login(appId uint32, userId string, loginTime uint64) {
-	c.AppId = appId
-	c.UserId = userId
+func (c *Client) Login(request *msgs.Login, loginTime uint64) {
+	c.AppId = request.AppId
+	c.UserId = request.UserId
+	c.ToUid = request.ToUid
+	c.GroupsId = request.GroupsId
 	c.LoginTime = loginTime
 	// 登录成功=心跳一次
 	c.Heartbeat(loginTime)

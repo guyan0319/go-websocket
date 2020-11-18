@@ -25,8 +25,7 @@ func server(param interface{}) (result bool) {
 
 	server := ws.GetServer()
 	currentTime := uint64(time.Now().Unix())
-	fmt.Println("服务注册", param, server, currentTime)
-
+	//fmt.Println("服务注册", param, server, currentTime)
 	cache.SetServerInfo(server, currentTime)
 
 	return

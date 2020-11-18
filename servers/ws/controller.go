@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis"
+	"go-websocket/conf"
 	"go-websocket/lib/cache"
 	"go-websocket/lib/response"
 	"go-websocket/servers/msgs"
@@ -15,7 +16,6 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 
 	code = response.OK
 	currentTime := uint64(time.Now().Unix())
-	fmt.Println(message,"faaaaa")
 	request := &msgs.Login{}
 	if err := json.Unmarshal(message, request); err != nil {
 		code = response.ParameterIllegal
@@ -41,12 +41,11 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 
 		return
 	}
-
 	//处理登录
-	client.Login(request.AppId, request.UserId, currentTime)
+	client.Login(request,currentTime)
 
 	// 存储数据
-	userOnline := msgs.UserLogin(serverIp, serverPort, request.AppId, request.UserId, client.Addr, currentTime)
+	userOnline := msgs.UserLogin(conf.Cfg.ServerIp, conf.Cfg.ServerPort, request.AppId, request.UserId, client.Addr, currentTime)
 	err := cache.SetUserOnlineInfo(client.GetKey(), userOnline)
 	if err != nil {
 		code = response.ServerError
@@ -62,7 +61,6 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 		Client: client,
 	}
 	Manager.Login <- login
-
 	fmt.Println("用户登录 成功", seq, client.Addr, request.UserId)
 
 	return
@@ -78,7 +76,6 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 	if err := json.Unmarshal(message, request); err != nil {
 		code = response.ParameterIllegal
 		fmt.Println("心跳接口 解析数据失败", seq, err)
-
 		return
 	}
 

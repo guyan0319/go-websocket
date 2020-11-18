@@ -63,7 +63,6 @@ func (manager *ClientManager) GetUserClient(appId uint32, userId string) (client
 func (manager *ClientManager) AddUsers(key string, client *Client) {
 	manager.UserClientsLock.Lock()
 	defer manager.UserClientsLock.Unlock()
-
 	manager.UserClients[key] = client
 }
 
@@ -88,13 +87,19 @@ func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
 func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 	manager.ClientsLock.RLock()
 	defer manager.ClientsLock.RUnlock()
-	fmt.Println(message.AppId)
-	fmt.Println(message.UserId)
 	client := Manager.GetUserClient(message.AppId, message.UserId)
-	fmt.Println(client,"fffffff")
-	fmt.Println(client.ToUid)
-	fmt.Println(client.GroupsId)
-	if client.ToUid=="" && client.GroupsId=="0"{
+	if client.ToUid=="" &&  client.GroupsId=="0"{
+		fmt.Println("接收方不存在", client.AppId, client.UserId)
+		return
+	}
+	//一对一发送
+	if client.GroupsId=="0"{
+		SendUserMessageAll()
+
+	}else{
+	//聊天室广播
+
+
 
 	}
 	//data := msgs.GetTextMsgData(userId, msgId, message)

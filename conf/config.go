@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"go-websocket/lib/common"
 	"sync"
 )
 
@@ -10,9 +11,11 @@ type Config struct {
 	Super string
 	RedisPre string
 	Host string
-	Port string
+	ServerPort string
 	OpenJwt bool
 	Routes []string
+	ServerIp string
+	AppIds []uint32
 }
 var (
 	Cfg  Config
@@ -22,14 +25,12 @@ var (
 
 func  Set(cfg Config) {
 	mutex.Lock()
+	Cfg = cfg
 	Cfg.RedisPre=setDefault(cfg.RedisPre,"","go.websocket.redis")
 	Cfg.Language=setDefault(cfg.Language,"","cn")
 	Cfg.Token=setDefault(cfg.Token,"","token")
 	Cfg.Super=setDefault(cfg.Super,"","admin")//超级账户
-	Cfg.Host=setDefault(cfg.Host,"","http://localhost:8282")//域名
-	Cfg.Port=setDefault(cfg.Port,"","8282")//域名
-	Cfg.Routes=cfg.Routes
-	Cfg.OpenJwt=cfg.OpenJwt
+	Cfg.ServerPort=setDefault(cfg.ServerPort,"","8282")//域名
 	mutex.Unlock()
 }
 func setDefault( value,def ,defValue string) string {
@@ -43,5 +44,7 @@ func InitConfig() {
 	c := Config{}
 	c.Routes = []string{"/ping"}
 	c.OpenJwt = true //开启jwt
+	c.ServerIp=common.GetServerIp()//获取当前服务器ip
+	c.AppIds=[]uint32{1, 2} //全部授权的平台
 	Set(c)
 }

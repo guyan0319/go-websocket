@@ -140,7 +140,6 @@ func IpIntToString(ipInt int) string{
 // 获取服务器Ip
 func GetServerIp() (ip string) {
 	addrs, err := net.InterfaceAddrs()
-
 	if err != nil {
 		return ""
 	}

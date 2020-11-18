@@ -1,29 +1,22 @@
 package ws
 
 import (
+	"go-websocket/conf"
 	"go-websocket/servers/msgs"
 )
 
-var (
-	appIds        = []uint32{1, 2} // 全部的平台
-
-	serverIp   string
-	serverPort string
-)
-
 func GetAppIds() []uint32 {
-
-	return appIds
+	return conf.Cfg.AppIds
 }
 
 func GetServer() (server *msgs.Server) {
-	server = msgs.NewServer(serverIp, serverPort)
+	server = msgs.NewServer(conf.Cfg.ServerIp, conf.Cfg.ServerPort)
 
 	return
 }
 
 func IsLocal(server *msgs.Server) (isLocal bool) {
-	if server.Ip == serverIp && server.Port == serverPort {
+	if server.Ip == conf.Cfg.ServerIp && server.Port == conf.Cfg.ServerPort {
 		isLocal = true
 	}
 
@@ -32,7 +25,7 @@ func IsLocal(server *msgs.Server) (isLocal bool) {
 
 func InAppIds(appId uint32) (inAppId bool) {
 
-	for _, value := range appIds {
+	for _, value := range GetAppIds() {
 		if value == appId {
 			inAppId = true
 
