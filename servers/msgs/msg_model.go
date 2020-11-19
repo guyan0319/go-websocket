@@ -8,7 +8,11 @@ const (
 	MessageActionEnter = "enter"
 	MessageActionExit = "exit"
 )
-
+//msgTimestamp  发送时间
+//msgType  消息类型 text img
+//content  内容
+//from  发送者
+//to  接受者
 // 消息的定义
 type Message struct {
 	Target string `json:"target"` // 目标
