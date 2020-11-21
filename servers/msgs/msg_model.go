@@ -1,13 +1,15 @@
 package msgs
 
 import "go-websocket/lib/response"
+
 const (
 	MessageTypeText = "text"
 
-	MessageActionMsg = "msg"
+	MessageActionMsg   = "msg"
 	MessageActionEnter = "enter"
-	MessageActionExit = "exit"
+	MessageActionExit  = "exit"
 )
+
 //msgTimestamp  发送时间
 //msgType  消息类型 text img
 //content  内容
@@ -15,20 +17,25 @@ const (
 //to  接受者
 // 消息的定义
 type Message struct {
-	Target string `json:"target"` // 目标
-	Type   string `json:"type"`   // 消息类型 text/img/
-	Msg    string `json:"msg"`    // 消息内容
-	From   string `json:"from"`   // 发送者
+	Action       string `json:"action"` //请求方法
+	MsgId        string `json:"msgId"`
+	MsgType      string `json:"msgType"`      // 消息类型 text/img/
+	Content      string `json:"content"`      // 消息内容
+	From         string `json:"from"`         // 发送者
+	To           string `json:"to"`           // 接收者
+	MsgTimestamp string `json:"msgTimestamp"` // 时间
 }
 
-func NewTestMsg(from string, Msg string) (message *Message) {
-
+func NewMessage(action, msgId,msgType,content ,to,from, msgTimestamp string) (message *Message) {
 	message = &Message{
-		Type: MessageTypeText,
+		Action:action,
+		MsgId:msgId,
+		MsgType:msgType,
+		Content:content,
 		From: from,
-		Msg:  Msg,
+		To:to,
+		MsgTimestamp:msgTimestamp,
 	}
-
 	return
 }
 
@@ -40,9 +47,10 @@ func getTextMsgData(action, uuId, msgId, message string) string {
 }
 
 // 文本消息
-func GetMsgData(uuId, msgId, action, message string) string {
-
-	return getTextMsgData(action, uuId, msgId, message)
+func GetMsgData(action, msgId,msgType,content ,to,from, msgTimestamp string) string {
+	data :=NewMessage(action, msgId,msgType,content ,to,from, msgTimestamp)
+	res:= NewResponse(response.OK,"success",data)
+	return res.String()
 }
 
 // 文本消息

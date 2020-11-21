@@ -1,5 +1,3 @@
-
-
 package msgs
 
 import "encoding/json"
@@ -7,14 +5,14 @@ import "encoding/json"
 /************************  响应数据  **************************/
 type Head struct {
 	Seq      string    `json:"seq"`      // 消息的Id
-	Action  string      `json:"action"`            // 请求方法名
+	Action   string    `json:"action"`   // 请求方法名
 	Response *Response `json:"response"` // 消息体
 }
 
 type Response struct {
-	Code    uint32      `json:"code"`
-	CodeMsg string      `json:"codeMsg"`
-	Data    interface{} `json:"data"` // 数据 json
+	Code uint32      `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"` // 数据 json
 }
 
 // push 数据结构体
@@ -39,6 +37,12 @@ func (h *Head) String() (headStr string) {
 	return
 }
 
-func NewResponse(code uint32, codeMsg string, data interface{}) *Response {
-	return &Response{Code: code, CodeMsg: codeMsg, Data: data}
+func NewResponse(code uint32, msg string, data interface{}) *Response {
+	return &Response{Code: code, Msg: msg, Data: data}
+}
+func (r *Response) String() (headStr string) {
+	headBytes, _ := json.Marshal(r)
+	headStr = string(headBytes)
+
+	return
 }
