@@ -39,12 +39,12 @@ func NewMessage(action, msgId,msgType,content ,to,from, msgTimestamp string) (me
 	return
 }
 
-func getTextMsgData(action, uuId, msgId, message string) string {
-	textMsg := NewTestMsg(uuId, message)
-	head := NewResponseHead(msgId, action, response.OK, "Ok", textMsg)
-
-	return head.String()
-}
+//func getTextMsgData(action, uuId, msgId, message string) string {
+//	textMsg := NewTestMsg(uuId, message)
+//	head := NewResponseHead(msgId, action, response.OK, "Ok", textMsg)
+//
+//	return head.String()
+//}
 
 // 文本消息
 func GetMsgData(action, msgId,msgType,content ,to,from, msgTimestamp string) string {
@@ -53,20 +53,20 @@ func GetMsgData(action, msgId,msgType,content ,to,from, msgTimestamp string) str
 	return res.String()
 }
 
-// 文本消息
-func GetTextMsgData(uuId, msgId, message string) string {
-
-	return getTextMsgData("msg", uuId, msgId, message)
-}
-
-// 用户进入消息
-func GetTextMsgDataEnter(uuId, msgId, message string) string {
-
-	return getTextMsgData("enter", uuId, msgId, message)
-}
-
-// 用户退出消息
-func GetTextMsgDataExit(uuId, msgId, message string) string {
-
-	return getTextMsgData("exit", uuId, msgId, message)
-}
+//// 文本消息
+//func GetTextMsgData(uuId, msgId, message string) string {
+//
+//	return getTextMsgData("msg", uuId, msgId, message)
+//}
+//
+//// 用户进入消息
+//func GetTextMsgDataEnter(uuId, msgId, message string) string {
+//
+//	return getTextMsgData("enter", uuId, msgId, message)
+//}
+//
+//// 用户退出消息
+//func GetTextMsgDataExit(uuId, msgId, message string) string {
+//
+//	return getTextMsgData("exit", uuId, msgId, message)
+//}
