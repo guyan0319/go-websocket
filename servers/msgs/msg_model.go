@@ -26,15 +26,15 @@ type Message struct {
 	MsgTimestamp string `json:"msgTimestamp"` // 时间
 }
 
-func NewMessage(action, msgId,msgType,content ,to,from, msgTimestamp string) (message *Message) {
+func NewMessage(action, msgId, msgType, content, to, from, msgTimestamp string) (message *Message) {
 	message = &Message{
-		Action:action,
-		MsgId:msgId,
-		MsgType:msgType,
-		Content:content,
-		From: from,
-		To:to,
-		MsgTimestamp:msgTimestamp,
+		Action:       action,
+		MsgId:        msgId,
+		MsgType:      msgType,
+		Content:      content,
+		From:         from,
+		To:           to,
+		MsgTimestamp: msgTimestamp,
 	}
 	return
 }
@@ -47,9 +47,9 @@ func NewMessage(action, msgId,msgType,content ,to,from, msgTimestamp string) (me
 //}
 
 // 文本消息
-func GetMsgData(action, msgId,msgType,content ,to,from, msgTimestamp string) string {
-	data :=NewMessage(action, msgId,msgType,content ,to,from, msgTimestamp)
-	res:= NewResponse(response.OK,"success",data)
+func GetMsgData(action, msgId, msgType, content, to, from, msgTimestamp string) string {
+	data := NewMessage(action, msgId, msgType, content, to, from, msgTimestamp)
+	res := NewResponse(response.OK, "success", data)
 	return res.String()
 }
 

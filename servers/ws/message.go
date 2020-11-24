@@ -17,13 +17,13 @@ func GetMsgIdTime() (msgId string) {
 // 给用户发送消息
 func SendUserMessage(appId uint32, userId string, msgId, message string) (sendResults bool, err error) {
 
-	data := msgs.GetTextMsgData(userId, msgId, message)
+	//data := msgs.GetTextMsgData(userId, msgId, message)
 
-	// TODO::需要判断不在本机的情况
-	sendResults, err = SendUserMessageLocal(appId, userId, data)
-	if err != nil {
-		fmt.Println("给用户发送消息", appId, userId, err)
-	}
+	//// TODO::需要判断不在本机的情况
+	//sendResults, err = SendUserMessageLocal(appId, userId, data)
+	//if err != nil {
+	//	fmt.Println("给用户发送消息", appId, userId, err)
+	//}
 
 	return
 }
@@ -56,7 +56,7 @@ func SendUserMessageAll(appId uint32, userId string, msgId, action, message stri
 
 	for _, server := range servers {
 		if IsLocal(server) {
-			//data := msgs.GetMsgData(userId, msgId, action, message)
+			data := msgs.GetMsgData(userId, msgId, action, message)
 			//AllSendMessages(appId, userId, data)
 		} else {
 			//grpcclient.SendMsgAll(server, msgId, appId, userId, action, message)
