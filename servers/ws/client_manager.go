@@ -88,7 +88,25 @@ func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 	manager.ClientsLock.RLock()
 	defer manager.ClientsLock.RUnlock()
 
-	manager.SendUserMessage(message.AppId,message.UserId,message.MsgId,"send",message.Message)
+	//client := Manager.GetUserClient(message.AppId,message.UserId)
+	//if client.ToUid=="" &&  client.GroupsId=="0"{
+	//	fmt.Println("接收方不存在", client.AppId, client.UserId)
+	//	return
+	//}
+	if message.ToUid=="" &&  message.GroupsId=="0"{
+		fmt.Println("接收方不存在", message.AppId, message.UserId)
+		return
+	}
+	//一对一发送
+	if message.GroupsId=="0"{
+		SendUserMessageAll(message,msgs.MessageActionMsg)
+	}else{
+		//聊天室广播
+
+
+
+	}
+
 
 	//data := msgs.GetTextMsgData(userId, msgId, message)
 	//

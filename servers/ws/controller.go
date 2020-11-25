@@ -132,7 +132,10 @@ func SendUserMsgController(client *Client, seq string, message []byte) (code uin
 	sendUsersMsg := &msgs.SendUserMsg{
 		AppId:   client.AppId,
 		UserId:  client.UserId,
+		ToUid:client.ToUid,
+		GroupsId:client.GroupsId,
 		MsgId:   seq,
+		MsgType:request.MsgType,
 		Message: request.Message,
 	}
 	Manager.SendUserMsg <- sendUsersMsg
