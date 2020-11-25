@@ -4,10 +4,14 @@ import "go-websocket/lib/response"
 
 const (
 	MessageTypeText = "text"
+	MessageTypeImage = "image"
+	MessageTypeVideo = "video"
+	MessageTypeVoice = "voice"
 
 	MessageActionMsg   = "msg"
 	MessageActionEnter = "enter"
 	MessageActionExit  = "exit"
+	MessageActionHeartbeat  = "heartbeat"
 )
 
 //msgTimestamp  发送时间
@@ -17,7 +21,7 @@ const (
 //to  接受者
 // 消息的定义
 type Message struct {
-	Action       string `json:"action"` //请求方法
+	Action       string `json:"action"`       //请求方法
 	MsgId        string `json:"msgId"`
 	MsgType      string `json:"msgType"`      // 消息类型 text/img/
 	Content      string `json:"content"`      // 消息内容

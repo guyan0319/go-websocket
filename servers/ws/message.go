@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"go-websocket/lib/cache"
-	"go-websocket/servers/msgs"
 	"time"
 )
 
@@ -56,7 +55,7 @@ func SendUserMessageAll(appId uint32, userId string, msgId, action, message stri
 
 	for _, server := range servers {
 		if IsLocal(server) {
-			data := msgs.GetMsgData(userId, msgId, action, message)
+			//data := msgs.GetMsgData(userId, msgId, action, message)
 			//AllSendMessages(appId, userId, data)
 		} else {
 			//grpcclient.SendMsgAll(server, msgId, appId, userId, action, message)

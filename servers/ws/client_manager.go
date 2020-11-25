@@ -87,21 +87,9 @@ func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
 func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 	manager.ClientsLock.RLock()
 	defer manager.ClientsLock.RUnlock()
-	client := Manager.GetUserClient(message.AppId, message.UserId)
-	if client.ToUid=="" &&  client.GroupsId=="0"{
-		fmt.Println("接收方不存在", client.AppId, client.UserId)
-		return
-	}
-	//一对一发送
-	if client.GroupsId=="0"{
-		//SendUserMessageAll()
 
-	}else{
-	//聊天室广播
+	manager.SendUserMessage(message.AppId,message.UserId,message.MsgId,"send",message.Message)
 
-
-
-	}
 	//data := msgs.GetTextMsgData(userId, msgId, message)
 	//
 	//// TODO::需要判断不在本机的情况
@@ -138,6 +126,35 @@ func (manager *ClientManager) EventLogin(login *login) {
 
 	msgId := GetMsgIdTime()
 	SendUserMessageAll(login.AppId, login.UserId, msgId, msgs.MessageActionEnter, "哈喽~")
+}
+// 给用户发送消息
+func  (manager *ClientManager) SendUserMessage(appId uint32, userId , msgId,action, message string) (sendResults bool, err error) {
+	client := Manager.GetUserClient(appId,userId)
+	if client.ToUid=="" &&  client.GroupsId=="0"{
+		fmt.Println("接收方不存在", client.AppId, client.UserId)
+		return
+	}
+	//一对一发送
+	if client.GroupsId=="0"{
+		//SendUserMessageAll()
+
+	}else{
+		//聊天室广播
+
+
+
+	}
+
+
+	//data := msgs.GetTextMsgData(userId, msgId, message)
+
+	//// TODO::需要判断不在本机的情况
+	//sendResults, err = SendUserMessageLocal(appId, userId, data)
+	//if err != nil {
+	//	fmt.Println("给用户发送消息", appId, userId, err)
+	//}
+
+	return
 }
 
 // 用户断开连接
