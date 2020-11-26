@@ -85,11 +85,6 @@ func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 	manager.ClientsLock.RLock()
 	defer manager.ClientsLock.RUnlock()
 
-	//client := Manager.GetUserClient(message.AppId,message.UserId)
-	//if client.ToUid=="" &&  client.GroupsId=="0"{
-	//	fmt.Println("接收方不存在", client.AppId, client.UserId)
-	//	return
-	//}
 	if message.ToUid=="" &&  message.GroupsId=="0"{
 		fmt.Println("接收方不存在", message.AppId, message.UserId)
 		return
@@ -122,7 +117,7 @@ func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 func (manager *ClientManager) EventRegister(client *Client) {
 	manager.AddClients(client)
 	fmt.Println("EventRegister 用户建立连接", client.Addr)
-	// client.Send <- []byte("连接成功")
+	client.Send <- []byte("连接成功")
 }
 
 // 用户登录
@@ -160,7 +155,7 @@ func (manager *ClientManager) EventUnregister(client *Client) {
 	}
 
 	// 关闭 chan
-	// close(client.Send)
+	close(client.Send)
 
 	fmt.Println("EventUnregister 用户断开连接", client.Addr, client.AppId, client.UserId)
 

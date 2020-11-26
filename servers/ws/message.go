@@ -57,7 +57,6 @@ func SendUserMessageAll(msg *msgs.SendUserMsg,action string) (sendResults bool, 
 		fmt.Println("给全体用户发消息", err)
 		return
 	}
-	fmt.Println(servers,"ffffffffffffffffff")
 	for _, server := range servers {
 		if IsLocal(server) {
 			data := msgs.GetMsgData(action,msg.MsgId,msg.MsgType,msg.Message,msg.ToUid,msg.UserId,GetMsgTime())
@@ -69,24 +68,3 @@ func SendUserMessageAll(msg *msgs.SendUserMsg,action string) (sendResults bool, 
 
 	return
 }
-// func SendUserMessageAll(appId uint32, userId string, msgId, action, message string) (sendResults bool, err error) {
-//	sendResults = true
-//
-//	currentTime := uint64(time.Now().Unix())
-//	servers, err := cache.GetServerAll(currentTime)
-//	if err != nil {
-//		fmt.Println("给全体用户发消息", err)
-//		return
-//	}
-//
-//	for _, server := range servers {
-//		if IsLocal(server) {
-//			data := msgs.GetMsgData(action,msgId,message)
-//			//AllSendMessages(appId, userId, data)
-//		} else {
-//			//grpcclient.SendMsgAll(server, msgId, appId, userId, action, message)
-//		}
-//	}
-//
-//	return
-//}

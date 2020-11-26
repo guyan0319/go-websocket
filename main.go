@@ -27,6 +27,9 @@ func main() {
 
 	//启动websocket
 	go ws.Manager.Start()
+
+
+
 	//启动http
 	r.Run(":"+conf.Cfg.ServerPort) // listen and serve on 0.0.0.0:8282
 
