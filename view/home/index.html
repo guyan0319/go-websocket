@@ -28,11 +28,9 @@
             uid=getUrlParam("uid");
             to_uid=getUrlParam("to_uid");
             groups_id=getUrlParam("groups_id");
-
             if (groups_id==null){
                 groups_id="0"
             }
-
             function appendLog(msg) {
                 var d = log[0]
                 var doScroll = d.scrollTop == d.scrollHeight - d.clientHeight;
@@ -54,6 +52,7 @@
                 var jsonStr = JSON.stringify(json);       //转为JSON字符串
 
                 conn.send(jsonStr);
+                appendLog($("<div/>").text(msg.val()))
                 msg.val("");
                 return false
             });
@@ -75,9 +74,12 @@
                 conn.onmessage = function(evt) {
                     console.log(evt.data)
                     obj = JSON.parse(evt.data);
-                    console.log(obj.response)
-                    appendLog($("<div/>").text(evt.data))
-
+                    if (obj.code !=undefined && obj.code!=200)
+                    {
+                        appendLog($("<div/>").text("发送失败"))
+                    }else{
+                        appendLog($("<div/>").text(evt.data))
+                    }
                 }
                 // 心跳
                 function heartbeat() {
