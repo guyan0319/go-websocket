@@ -116,7 +116,6 @@ func (c *Client) SendMsg(msg []byte) {
 			fmt.Println("SendMsg stop:", r, string(debug.Stack()))
 		}
 	}()
-
 	c.Send <- msg
 }
 

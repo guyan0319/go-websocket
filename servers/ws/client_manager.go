@@ -41,13 +41,11 @@ func (manager *ClientManager) AddClients(client *Client) {
 func (manager *ClientManager) DelClients(client *Client) {
 	manager.ClientsLock.Lock()
 	defer manager.ClientsLock.Unlock()
-
 	delete(manager.Clients, client)
 }
 
 // 获取用户的连接
 func (manager *ClientManager) GetUserClient(appId uint32, userId string) (client *Client) {
-
 	manager.UserClientsLock.RLock()
 	defer manager.UserClientsLock.RUnlock()
 
@@ -55,7 +53,6 @@ func (manager *ClientManager) GetUserClient(appId uint32, userId string) (client
 	if value, ok := manager.UserClients[userKey]; ok {
 		client = value
 	}
-
 	return
 }
 
@@ -142,38 +139,10 @@ func (manager *ClientManager) EventLogin(login *login) {
 
 	fmt.Println("EventLogin 用户登录", client.Addr, login.AppId, login.UserId)
 
-	msgId := GetMsgIdTime()
-	SendUserMessageAll(login.AppId, login.UserId, msgId, msgs.MessageActionEnter, "哈喽~")
+	//msgId := GetMsgIdTime()
+	//SendUserMessageAll(login.AppId, login.UserId, msgId, msgs.MessageActionEnter, "哈喽~")
 }
-// 给用户发送消息
-func  (manager *ClientManager) SendUserMessage(appId uint32, userId , msgId,action, message string) (sendResults bool, err error) {
-	client := Manager.GetUserClient(appId,userId)
-	if client.ToUid=="" &&  client.GroupsId=="0"{
-		fmt.Println("接收方不存在", client.AppId, client.UserId)
-		return
-	}
-	//一对一发送
-	if client.GroupsId=="0"{
-		//SendUserMessageAll()
 
-	}else{
-		//聊天室广播
-
-
-
-	}
-
-
-	//data := msgs.GetTextMsgData(userId, msgId, message)
-
-	//// TODO::需要判断不在本机的情况
-	//sendResults, err = SendUserMessageLocal(appId, userId, data)
-	//if err != nil {
-	//	fmt.Println("给用户发送消息", appId, userId, err)
-	//}
-
-	return
-}
 
 // 用户断开连接
 func (manager *ClientManager) EventUnregister(client *Client) {
@@ -196,8 +165,8 @@ func (manager *ClientManager) EventUnregister(client *Client) {
 	fmt.Println("EventUnregister 用户断开连接", client.Addr, client.AppId, client.UserId)
 
 	if client.UserId != "" {
-		msgId := GetMsgIdTime()
-		_,_=SendUserMessageAll(client.AppId, client.UserId,msgId, msgs.MessageActionExit, "用户已经离开~")
+		//msgId := GetMsgIdTime()
+		//_,_=SendUserMessageAll(client.AppId, client.UserId,msgId, msgs.MessageActionExit, "用户已经离开~")
 	}
 }
 
@@ -292,3 +261,14 @@ func AllSendMessages(appId uint32, userId string, data string) {
 	ignore := Manager.GetUserClient(appId, userId)
 	Manager.sendAll([]byte(data), ignore)
 }
+
+// 发送消息
+func SendMessages(appId uint32, userId string, data string) {
+	fmt.Println(userId,"qqqqqqqqqqqqqqqqqq")
+	client := Manager.GetUserClient(appId, userId)
+	if client!=nil {
+		client.SendMsg([]byte(data))
+	}
+}
+
+

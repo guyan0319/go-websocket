@@ -28,8 +28,9 @@
             uid=getUrlParam("uid");
             to_uid=getUrlParam("to_uid");
             groups_id=getUrlParam("groups_id");
-            if (to_uid!=""){
-                groups_id="1"
+
+            if (groups_id==null){
+                groups_id="0"
             }
 
             function appendLog(msg) {
@@ -72,11 +73,15 @@
                 }
 
                 conn.onmessage = function(evt) {
+                    console.log(evt.data)
+                    obj = JSON.parse(evt.data);
+                    console.log(obj.response)
                     appendLog($("<div/>").text(evt.data))
+
                 }
                 // 心跳
                 function heartbeat() {
-                    console.log("定时心跳:" + uid);
+                    // console.log("定时心跳:" + uid);
                     conn.send('{"seq":"' + sendId() + '","action":"heartbeat","data":{}}');
 
                 }

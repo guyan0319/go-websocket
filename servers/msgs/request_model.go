@@ -36,7 +36,7 @@ type SendUserMsg struct {
 //验证登录用户
 func (l *Login) CheckLogin() (ret bool) {
 	ret = true
-	if l.UserId == "" || len(l.UserId) >= 20 {
+	if l.UserId == "" ||l.UserId=="null" || len(l.UserId) >= 20 {
 		ret = false
 		return
 	}
