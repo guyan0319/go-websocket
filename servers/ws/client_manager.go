@@ -259,7 +259,6 @@ func AllSendMessages(appId uint32, userId string, data string) {
 
 // 发送消息
 func SendMessages(appId uint32, userId string, data string) {
-	fmt.Println(userId,"qqqqqqqqqqqqqqqqqq")
 	client := Manager.GetUserClient(appId, userId)
 	if client!=nil {
 		client.SendMsg([]byte(data))

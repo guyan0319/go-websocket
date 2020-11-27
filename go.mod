@@ -22,6 +22,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible
+	github.com/google/uuid v1.1.2 // indirect
 	github.com/gorilla/websocket v1.4.2
 	github.com/grandcat/zeroconf v1.0.0 // indirect
 	github.com/hashicorp/consul/api v1.8.0 // indirect
@@ -40,6 +41,7 @@ require (
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/pkg/errors v0.9.1
+	github.com/rpcxio/rpcx-examples v1.1.6 // indirect
 	github.com/samuel/go-zookeeper v0.0.0-20200724154423-2164a8ac840e // indirect
 	github.com/smallnest/quick v0.0.0-20200505103731-c8c83f9c76d3 // indirect
 	github.com/smallnest/rpcx v0.0.0-20201125003204-f058e82491ce // indirect
@@ -60,7 +62,9 @@ require (
 	golang.org/x/tools v0.0.0-20201125231158-b5590deeca9b // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20201119123407-9b1e624d6bc4 // indirect
-	google.golang.org/grpc v1.33.2 // indirect
+
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
