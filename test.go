@@ -25,7 +25,7 @@ func main() {
 	// func NArg() 函数返回没有被解析的命令行参数的个数
 	fmt.Printf("args=%s, num=%d\n", flag.Args(), flag.NArg())
 	for i := 0; i != flag.NArg(); i++ {
-		fmt.Printf("arg[%d]=%s\n", i, flag.Arg(i))
+		fmt.Printf("arg[%]=%s\n", i, flag.Arg(i))
 	}
 
 	// 输出命令行参数

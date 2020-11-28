@@ -57,12 +57,12 @@ func SendUserMessageAll(msg *msgs.SendUserMsg,action string) (sendResults bool, 
 		fmt.Println("给全体用户发消息", err)
 		return
 	}
+	data := msgs.GetMsgData(action,msg.MsgId,msg.MsgType,msg.Message,msg.ToUid,msg.UserId,GetMsgTime())
 	for _, server := range servers {
 		if IsLocal(server) {
-			data := msgs.GetMsgData(action,msg.MsgId,msg.MsgType,msg.Message,msg.ToUid,msg.UserId,GetMsgTime())
 			SendMessages(msg.AppId, msg.ToUid, data)
 		} else {
-			//grpcclient.SendMsgAll(server, msgId, appId, userId, action, message)
+			//grpc.SendMessages(server,msg.AppId, msg.ToUid, data)
 		}
 	}
 

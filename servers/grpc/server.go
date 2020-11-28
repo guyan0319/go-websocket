@@ -2,22 +2,32 @@ package grpc
 
 import (
 	"github.com/smallnest/rpcx/server"
+	"context"
 	"go-websocket/conf"
 )
 
-type Server struct{}
+type RpcServer struct{}
 
-func (S *Server)SendMessages()  {
+
+func (R *RpcServer)SendMessages(ctx context.Context, args Args, reply *Reply) error {
+
+	
+
+
+
+	return nil
+
+
 
 }
 
-func (S *Server)GetUserList()  {
+func (R *RpcServer)GetUserList()  {
 
 }
 
 func Start() {
 	s := server.NewServer()
-	s.Register( new(Server), "")
+	s.Register( new(RpcServer), "")
 	err := s.Serve("tcp", GetRpcAddress())
 	if err != nil {
 		panic(err)
