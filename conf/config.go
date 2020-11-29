@@ -13,6 +13,7 @@ type Config struct {
 	Host string
 	ServerPort string
 	RpcPort string
+	RpcIp string
 	OpenJwt bool
 	Routes []string
 	ServerIp string
@@ -32,7 +33,8 @@ func  Set(cfg Config) {
 	Cfg.Token=setDefault(cfg.Token,"","token")
 	Cfg.Super=setDefault(cfg.Super,"","admin")//超级账户
 	Cfg.ServerPort=setDefault(cfg.ServerPort,"","8282")//web  ws 端口
-	Cfg.RpcPort=setDefault(cfg.RpcPort,"","8287")//rpc 端口
+	Cfg.RpcPort=setDefault(cfg.RpcPort,"","8972")//rpc 端口
+	Cfg.RpcIp=setDefault(cfg.RpcIp,"","localhost")//rpc 域名
 	mutex.Unlock()
 }
 func setDefault( value,def ,defValue string) string {

@@ -44,7 +44,7 @@ require (
 	github.com/rpcxio/rpcx-examples v1.1.6 // indirect
 	github.com/samuel/go-zookeeper v0.0.0-20200724154423-2164a8ac840e // indirect
 	github.com/smallnest/quick v0.0.0-20200505103731-c8c83f9c76d3 // indirect
-	github.com/smallnest/rpcx v0.0.0-20201125003204-f058e82491ce // indirect
+	github.com/smallnest/rpcx v0.0.0-20201125003204-f058e82491ce
 	github.com/templexxx/cpufeat v0.0.0-20180724012125-cef66df7f161 // indirect
 	github.com/templexxx/xor v0.0.0-20191217153810-f85b25db303b // indirect
 	github.com/tjfoc/gmsm v1.3.2 // indirect

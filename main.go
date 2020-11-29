@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-websocket/conf"
 	"go-websocket/routers"
+	"go-websocket/servers/grpc"
 	"go-websocket/servers/task"
 	"go-websocket/servers/ws"
 )
@@ -24,6 +25,9 @@ func main() {
 
 	// 服务注册
 	task.ServerInit()
+
+	//rpc服务启动
+	grpc.Start()
 
 	//启动websocket
 	go ws.Manager.Start()

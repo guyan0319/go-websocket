@@ -28,6 +28,8 @@ func main() {
 	s := server.NewServer()
 	s.Register(new(Arith), "")
 	//s.RegisterName("Arith", new(Arith), "")
+	fmt.Println(*addr)
+
 	err := s.Serve("tcp", *addr)
 	if err != nil {
 		panic(err)

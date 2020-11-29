@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"go-websocket/lib/cache"
+	"go-websocket/servers/grpc"
 	"go-websocket/servers/msgs"
 	"time"
 )
@@ -59,11 +60,12 @@ func SendUserMessageAll(msg *msgs.SendUserMsg,action string) (sendResults bool, 
 	}
 	data := msgs.GetMsgData(action,msg.MsgId,msg.MsgType,msg.Message,msg.ToUid,msg.UserId,GetMsgTime())
 	for _, server := range servers {
-		if IsLocal(server) {
-			SendMessages(msg.AppId, msg.ToUid, data)
-		} else {
-			//grpc.SendMessages(server,msg.AppId, msg.ToUid, data)
-		}
+		//if IsLocal(server) {
+		//	SendMessages(msg.AppId, msg.ToUid, data)
+		//} else {
+		//	grpc.SendMessages(server,msg.AppId, msg.ToUid, data)
+		//}
+		grpc.SendMessages(server,msg.AppId, msg.ToUid, data)
 	}
 
 	return
