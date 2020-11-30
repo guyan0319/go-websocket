@@ -1,4 +1,4 @@
-package grpc
+package ws
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 type RpcServer struct{}
 
 func (R *RpcServer)SendMessages(ctx context.Context, args Args, reply *Reply) error {
-	//ws.SendMessages(args.AppId, args.UserId, args.Data)
+	SendMessages(args.AppId, args.UserId, args.Data)
 	return nil
 }
 
@@ -19,7 +19,7 @@ func (R *RpcServer)SendMessages(ctx context.Context, args Args, reply *Reply) er
 //
 //}
 
-func Start() {
+func RpcStart() {
 	flag.Parse()
 	s := server.NewServer()
 	s.Register( new(RpcServer), "")
@@ -30,5 +30,5 @@ func Start() {
 	fmt.Println("rpc服务启动")
 }
 func GetRpcAddress()  string {
-	return  conf.Cfg.RpcIp+":"+conf.Cfg.RpcPort
+	return  conf.Cfg.ServerIp+":"+conf.Cfg.RpcPort
 }

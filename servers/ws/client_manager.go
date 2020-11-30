@@ -98,19 +98,6 @@ func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 
 
 	}
-
-
-	//data := msgs.GetTextMsgData(userId, msgId, message)
-	//
-	//// TODO::需要判断不在本机的情况
-	//sendResults, err = SendUserMessageLocal(appId, userId, data)
-	//if err != nil {
-	//	fmt.Println("给用户发送消息", appId, userId, err)
-	//}
-
-
-
-	// client.Send <- []byte("连接成功")
 }
 
 // 用户建立连接事件

@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	addr = flag.String("addr", "localhost:8972", "server address")
+	addr = flag.String("addr", "192.168.9.93:8972", "server address")
 )
 
 type Arith struct{}

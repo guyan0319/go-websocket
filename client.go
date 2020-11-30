@@ -14,7 +14,7 @@ import (
 
 func main() {
 
-	d := client.NewPeer2PeerDiscovery("tcp@"+"localhost:8972", "")
+	d := client.NewPeer2PeerDiscovery("tcp@"+"192.168.9.93:8972", "")
 	opt := client.DefaultOption
 	opt.SerializeType = protocol.JSON
 

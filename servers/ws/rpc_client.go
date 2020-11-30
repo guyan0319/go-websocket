@@ -1,4 +1,4 @@
-package grpc
+package ws
 
 import (
 	"context"
@@ -16,7 +16,7 @@ type Args struct {
 type Reply struct {
 
 }
-func SendMessages(server *msgs.Server,appId uint32,userId,data string,)  {
+func RpcSendMessages(server *msgs.Server,appId uint32,userId,data string,)  {
 	xclient:=RpcConnect("RpcServer",server.Ip)
 	defer xclient.Close()
 	args := Args{
