@@ -18,7 +18,7 @@ type Response struct {
 // push 数据结构体
 type PushMsg struct {
 	Seq  string `json:"seq"`
-	Uuid uint64 `json:"uuid"`
+	Uid uint64 `json:"uid"`
 	Type string `json:"type"`
 	Msg  string `json:"msg"`
 }
