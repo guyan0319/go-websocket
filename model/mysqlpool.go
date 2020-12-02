@@ -1,0 +1,6 @@
+package model
+
+func init()  {
+
+
+}
