@@ -15,6 +15,7 @@ type Config struct {
 	RpcPort    string
 	RpcIp      string
 	OpenJwt    bool
+	ShowSql    bool
 	Routes     []string
 	ServerIp   string
 	AppIds     []uint32
@@ -48,6 +49,7 @@ func InitConfig() {
 	c := Config{}
 	c.Routes = []string{"/ping"}
 	c.OpenJwt = true                  //开启jwt
+	c.ShowSql = true                  //开启控制台打印sql
 	c.ServerIp = common.GetServerIp() //获取当前服务器ip
 	c.AppIds = []uint32{1, 2}         //全部授权的平台
 	Set(c)

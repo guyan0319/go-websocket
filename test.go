@@ -1,36 +1,44 @@
 package main
 
-import "flag"
-import "fmt"
-
-// 定义命令行参数对应的变量，这三个变量都是指针类型
-var cliName = flag.String("name", "nick", "Input Your Name")
-var cliAge = flag.Int("age", 28, "Input Your Age")
-var cliGender = flag.String("gender", "male", "Input Your Gender")
-
-// 定义一个值类型的命令行参数变量，在 Init() 函数中对其初始化
-// 因此，命令行参数对应变量的定义和初始化是可以分开的
-var cliFlag int
-func Init() {
-	flag.IntVar(&cliFlag, "flagname", 1234, "Just for demo")
-}
+import (
+	"fmt"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"time"
+)
 
 func main() {
-	// 初始化变量 cliFlag
-	Init()
-	// 把用户传递的命令行参数解析为对应变量的值
-	flag.Parse()
-
-	// flag.Args() 函数返回没有被解析的命令行参数
-	// func NArg() 函数返回没有被解析的命令行参数的个数
-	fmt.Printf("args=%s, num=%d\n", flag.Args(), flag.NArg())
-	for i := 0; i != flag.NArg(); i++ {
-		fmt.Printf("arg[%]=%s\n", i, flag.Arg(i))
+	//Db, err := gorm.Open(mysql.New(mysql.Config{
+	//	DSN:                       "root:123456@tcp(localhost:3306)/imdb?charset=utf8mb4&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
+	//	DefaultStringSize:         256,                                                                               // add default size for string fields, by default, will use db type `longtext` for fields without size, not a primary key, no index defined and don't have default values
+	//	DisableDatetimePrecision:  true,                                                                              // disable datetime precision support, which not supported before MySQL 5.6
+	//	DontSupportRenameIndex:    true,                                                                              // drop & create index when rename index, rename index not supported before MySQL 5.7, MariaDB
+	//	DontSupportRenameColumn:   true,                                                                              // use change when rename column, rename rename not supported before MySQL 8, MariaDB
+	//	SkipInitializeWithVersion: false,                                                                             // smart configure based on used version
+	//}), &gorm.Config{})
+	//if err != nil {
+	//	panic("failed to connect database")
+	//}
+	db, err := gorm.Open(mysql.New(mysql.Config{
+		DSN: "root:123456@tcp(localhost:3306)/testdb?charset=utf8mb4&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
+		DefaultStringSize: 256, // add default size for string fields, by default, will use db type `longtext` for fields without size, not a primary key, no index defined and don't have default values
+		DisableDatetimePrecision: true, // disable datetime precision support, which not supported before MySQL 5.6
+		DontSupportRenameIndex: true, // drop & create index when rename index, rename index not supported before MySQL 5.7, MariaDB
+		DontSupportRenameColumn: true, // use change when rename column, rename rename not supported before MySQL 8, MariaDB
+		SkipInitializeWithVersion: false, // smart configure based on used version
+	}), &gorm.Config{})
+	if err != nil {
+		panic("failed to connect database")
 	}
+	//设置连接池
+	// 获取通用数据库对象 sql.DB ，然后使用其提供的功能
+	sqlDB, err := db.DB()
+	// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。
+	sqlDB.SetMaxIdleConns(10)
+	// SetMaxOpenConns 设置打开数据库连接的最大数量。
+	sqlDB.SetMaxOpenConns(100)
+	// SetConnMaxLifetime 设置了连接可复用的最大时间。
+	sqlDB.SetConnMaxLifetime(time.Hour)
+	fmt.Println("fsadf")
 
-	// 输出命令行参数
-	fmt.Println("name=", *cliName)
-	fmt.Println("age=", *cliAge)
-	fmt.Println("gender=", *cliGender)
-	fmt.Println("flagname=", cliFlag)
 }
