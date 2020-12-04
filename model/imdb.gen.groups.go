@@ -1,10 +1,10 @@
 package model
 
 import (
+	"context"
 	"fmt"
 	"gorm.io/gorm"
 	"time"
-	"context"
 )
 
 type _GroupsMgr struct {
@@ -49,6 +49,11 @@ func (obj *_GroupsMgr) WithID(id int64) Option {
 // WithName name获取 名称
 func (obj *_GroupsMgr) WithName(name string) Option {
 	return optionFunc(func(o *options) { o.query["name"] = name })
+}
+
+// WithAppid appid获取 应用id
+func (obj *_GroupsMgr) WithAppid(appid uint8) Option {
+	return optionFunc(func(o *options) { o.query["appid"] = appid })
 }
 
 // WithState state获取 状态(1:有效，0无效，9删除)
@@ -120,6 +125,20 @@ func (obj *_GroupsMgr) GetFromName(name string) (results []*Groups, err error) {
 // GetBatchFromName 批量唯一主键查找 名称
 func (obj *_GroupsMgr) GetBatchFromName(names []string) (results []*Groups, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("name IN (?)", names).Find(&results).Error
+
+	return
+}
+
+// GetFromAppid 通过appid获取内容 应用id
+func (obj *_GroupsMgr) GetFromAppid(appid uint8) (results []*Groups, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("appid = ?", appid).Find(&results).Error
+
+	return
+}
+
+// GetBatchFromAppid 批量唯一主键查找 应用id
+func (obj *_GroupsMgr) GetBatchFromAppid(appids []uint8) (results []*Groups, err error) {
+	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("appid IN (?)", appids).Find(&results).Error
 
 	return
 }

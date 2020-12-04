@@ -1,10 +1,10 @@
 package model
 
 import (
+	"context"
 	"fmt"
 	"gorm.io/gorm"
 	"time"
-	"context"
 )
 
 type _MessageMgr struct {
@@ -42,7 +42,7 @@ func (obj *_MessageMgr) Gets() (results []*Message, err error) {
 //////////////////////////option case ////////////////////////////////////////////
 
 // WithID id获取 ID
-func (obj *_MessageMgr) WithID(id int64) Option {
+func (obj *_MessageMgr) WithID(id uint64) Option {
 	return optionFunc(func(o *options) { o.query["id"] = id })
 }
 
@@ -62,7 +62,7 @@ func (obj *_MessageMgr) WithFromUId(fromUId uint64) Option {
 }
 
 // WithToUId to_uid获取 接收方UID
-func (obj *_MessageMgr) WithToUId(toUId int64) Option {
+func (obj *_MessageMgr) WithToUId(toUId uint64) Option {
 	return optionFunc(func(o *options) { o.query["to_uid"] = toUId })
 }
 
@@ -77,7 +77,7 @@ func (obj *_MessageMgr) WithType(_type bool) Option {
 }
 
 // WithAppname appname获取 应用名称
-func (obj *_MessageMgr) WithAppname(appname uint8) Option {
+func (obj *_MessageMgr) WithAppname(appname int8) Option {
 	return optionFunc(func(o *options) { o.query["appname"] = appname })
 }
 
@@ -102,12 +102,12 @@ func (obj *_MessageMgr) WithState(state bool) Option {
 }
 
 // WithAdminID admin_id获取 审核人
-func (obj *_MessageMgr) WithAdminID(adminID uint32) Option {
+func (obj *_MessageMgr) WithAdminID(adminID int) Option {
 	return optionFunc(func(o *options) { o.query["admin_id"] = adminID })
 }
 
 // WithCtime ctime获取 创建时间
-func (obj *_MessageMgr) WithCtime(ctime uint32) Option {
+func (obj *_MessageMgr) WithCtime(ctime int) Option {
 	return optionFunc(func(o *options) { o.query["ctime"] = ctime })
 }
 
@@ -147,14 +147,14 @@ func (obj *_MessageMgr) GetByOptions(opts ...Option) (results []*Message, err er
 //////////////////////////enume case ////////////////////////////////////////////
 
 // GetFromID 通过id获取内容 ID
-func (obj *_MessageMgr) GetFromID(id int64) (results []*Message, err error) {
+func (obj *_MessageMgr) GetFromID(id uint64) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("id = ?", id).Find(&results).Error
 
 	return
 }
 
 // GetBatchFromID 批量唯一主键查找 ID
-func (obj *_MessageMgr) GetBatchFromID(ids []int64) (results []*Message, err error) {
+func (obj *_MessageMgr) GetBatchFromID(ids []uint64) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("id IN (?)", ids).Find(&results).Error
 
 	return
@@ -203,14 +203,14 @@ func (obj *_MessageMgr) GetBatchFromFromUId(fromUIds []uint64) (results []*Messa
 }
 
 // GetFromToUId 通过to_uid获取内容 接收方UID
-func (obj *_MessageMgr) GetFromToUId(toUId int64) (results []*Message, err error) {
+func (obj *_MessageMgr) GetFromToUId(toUId uint64) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("to_uid = ?", toUId).Find(&results).Error
 
 	return
 }
 
 // GetBatchFromToUId 批量唯一主键查找 接收方UID
-func (obj *_MessageMgr) GetBatchFromToUId(toUIds []int64) (results []*Message, err error) {
+func (obj *_MessageMgr) GetBatchFromToUId(toUIds []uint64) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("to_uid IN (?)", toUIds).Find(&results).Error
 
 	return
@@ -245,14 +245,14 @@ func (obj *_MessageMgr) GetBatchFromType(_types []bool) (results []*Message, err
 }
 
 // GetFromAppname 通过appname获取内容 应用名称
-func (obj *_MessageMgr) GetFromAppname(appname uint8) (results []*Message, err error) {
+func (obj *_MessageMgr) GetFromAppname(appname int8) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("appname = ?", appname).Find(&results).Error
 
 	return
 }
 
 // GetBatchFromAppname 批量唯一主键查找 应用名称
-func (obj *_MessageMgr) GetBatchFromAppname(appnames []uint8) (results []*Message, err error) {
+func (obj *_MessageMgr) GetBatchFromAppname(appnames []int8) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("appname IN (?)", appnames).Find(&results).Error
 
 	return
@@ -315,28 +315,28 @@ func (obj *_MessageMgr) GetBatchFromState(states []bool) (results []*Message, er
 }
 
 // GetFromAdminID 通过admin_id获取内容 审核人
-func (obj *_MessageMgr) GetFromAdminID(adminID uint32) (results []*Message, err error) {
+func (obj *_MessageMgr) GetFromAdminID(adminID int) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("admin_id = ?", adminID).Find(&results).Error
 
 	return
 }
 
 // GetBatchFromAdminID 批量唯一主键查找 审核人
-func (obj *_MessageMgr) GetBatchFromAdminID(adminIDs []uint32) (results []*Message, err error) {
+func (obj *_MessageMgr) GetBatchFromAdminID(adminIDs []int) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("admin_id IN (?)", adminIDs).Find(&results).Error
 
 	return
 }
 
 // GetFromCtime 通过ctime获取内容 创建时间
-func (obj *_MessageMgr) GetFromCtime(ctime uint32) (results []*Message, err error) {
+func (obj *_MessageMgr) GetFromCtime(ctime int) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("ctime = ?", ctime).Find(&results).Error
 
 	return
 }
 
 // GetBatchFromCtime 批量唯一主键查找 创建时间
-func (obj *_MessageMgr) GetBatchFromCtime(ctimes []uint32) (results []*Message, err error) {
+func (obj *_MessageMgr) GetBatchFromCtime(ctimes []int) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("ctime IN (?)", ctimes).Find(&results).Error
 
 	return
@@ -380,7 +380,7 @@ func (obj *_MessageMgr) FetchIndexByFromUId(fromUId uint64) (results []*Message,
 }
 
 // FetchIndexByToUId  获取多个内容
-func (obj *_MessageMgr) FetchIndexByToUId(toUId int64) (results []*Message, err error) {
+func (obj *_MessageMgr) FetchIndexByToUId(toUId uint64) (results []*Message, err error) {
 	err = obj.DB.WithContext(obj.ctx).Table(obj.GetTableName()).Where("to_uid = ?", toUId).Find(&results).Error
 
 	return

@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"go-websocket/conf"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -9,8 +8,8 @@ import (
 )
 var Db *gorm.DB
 func init()  {
-	fmt.Println("ffffff")
-	Db, err := gorm.Open(mysql.New(conf.MysqlConfig()), &gorm.Config{})
+	var err error
+	Db, err = gorm.Open(mysql.New(conf.MysqlConfig()), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}

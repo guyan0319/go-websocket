@@ -1,10 +1,10 @@
 package model
 
 import (
+	"context"
 	"fmt"
 	"gorm.io/gorm"
 	"time"
-	"context"
 )
 
 type _MemberMgr struct {
