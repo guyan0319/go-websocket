@@ -11,11 +11,15 @@ import (
 func Init(r *gin.Engine)  {
 	r.LoadHTMLGlob("view/**/*")
 
-	// 用户组
+	// 用户列表
 	userRouter := r.Group("/user")
 	{
 		userRouter.GET("/list", user.List)
+		userRouter.GET("/groupslist", user.GroupsList)
 	}
+
+
+
 
 	// home
 	homeRouter := r.Group("/home")

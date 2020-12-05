@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： localhost
--- 生成日期： 2020-11-30 17:36:36
+-- 生成日期： 2020-12-05 23:25:12
 -- 服务器版本： 8.0.12
 -- PHP 版本： 7.3.4
 
@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `groups` (
   `id` bigint(20) NOT NULL COMMENT '主键',
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '名称',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '名称',
+  `appid` tinyint(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '应用id',
   `state` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态(1:有效，0无效，9删除)',
   `ctime` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间'
@@ -74,7 +75,7 @@ CREATE TABLE `groups_message` (
 
 CREATE TABLE `member` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '姓名',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '姓名',
   `state` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态(1:有效，0无效，9删除)',
   `ctime` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP

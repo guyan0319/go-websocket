@@ -22,8 +22,10 @@ func List(c *gin.Context)  {
 }
 func GroupsList(c *gin.Context)  {
 	//appIdStr := c.Query("appId")
-	//appId, _ := strconv.ParseInt(appIdStr, 10, 32)
+	//data,err :=model.GetGroupsAll(appIdStr)
+	//if err !=nil{
 	//
+	//}
 	//
 	//
 	//data := make(map[string]interface{})
