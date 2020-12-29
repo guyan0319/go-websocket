@@ -2,9 +2,9 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-im/controllers"
-	"go-im/lib/response"
-	"go-im/model"
+	"go-websocket/controllers"
+	"go-websocket/lib/response"
+	"go-websocket/model"
 )
 
 func List(c *gin.Context)  {
