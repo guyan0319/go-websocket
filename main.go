@@ -12,7 +12,7 @@ func main() {
 	conf.InitConfig()
 	gin.SetMode(gin.DebugMode) // 开发环境
 	//gin.SetMode(gin.ReleaseMode) //线上环境
-	groups,_ :=model.GetGroupsAll("1")
+	_,groups:=model.GetGroupsAll("1")
 	fmt.Println(groups)
 	//
 	//r := gin.Default()
