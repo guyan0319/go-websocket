@@ -1,10 +1,11 @@
 package model
 
-const groups_state_yes = 1
-const groups_state_no = 0
+type Groups struct {
+	ID int64 `gorm:"primaryKey;column:id;type:bigint(20);not null"` // 主键
+}
 
 func GetGroupsAll(appId string) (error ,[]Groups) {
-	var groups []Groups
-	result :=Db.Where("appid =?",appId).Where("state =?",groups_state_yes).Find(&groups)
-	return result.Error,groups
+    var groupsArr []Groups
+    groupsArr=append(groupsArr,Groups{ID:1})
+	return nil,groupsArr
 }
