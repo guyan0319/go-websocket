@@ -3,8 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style type="text/css">
+        .talk_con {
+            width: 600px;
+            height: 700px;
+            border: 1px solid blue;
+            margin: 0px auto 0;
+            background: #f9f9f9;
+        }
+        .talk_con p {
+            font-size: 15px;
+            color: blue;
+        }
+        .talk_con h1 {
+            text-align: center;
+        }
+        .talk_show {
+            width: 580px;
+            height: 420px;
+            border: 1px solid red;
+            background: #fff;
+            margin: 10px auto 0;
+            overflow: auto;
+        }
+        .talk_input {
+            width: 580px;
+            margin: 10px auto 0;
+        }
+        .whotalk {
+            width: 80px;
+            height: 30px;
+            float: left;
+            outline: none;
+        }
+        .talk_word {
+            width: 420px;
+            height: 180px;
+            padding: 0px;
+            float: left;
+            margin-left: 10px;
+            outline: none;
+            text-indent: 10px;
+            border: 1px solid red;
+        }
+        .talk_sub {
+            width: 56px;
+            height: 30px;
+            float: left;
+            margin-left: 10px;
+            background: red;
+            border: none;
+            color: #fff;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .atalk {
+            margin: 10px;
+        }
+        /*.atalk img {*/
+        /*    width: 40px;*/
+        /*    height: 40px;*/
+        /*    border-radius: 50%;*/
+        /*    float: left;*/
+        /*}*/
+        .atalk span {
+            display: inline-block;
+            background: #0181cc;
+            border-radius: 10px;
+            color: #fff;
+            padding: 5px 10px;
+            max-width: 200px;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+        .btalk {
+            margin: 10px;
+            text-align: right;
+        }
+        .btalk img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            float: right;
+            margin-top: -10px;
+        }
+        .btalk span {
+            display: inline-block;
+            background: grey;
+            border-radius: 10px;
+            color: #fff;
+            padding: 5px 10px;
+            max-width: 200px;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+        </style>
 </head>
 <body>
+<div class="talk_con">
+       <h1>欢迎进入聊天室</h1>
+      <div class="talk_main">
+          <div class="personnel-list">
+              <ul class="personnel-list-ul">
+                  fasdf
+              </ul>
+              <!-- 在线列表 -->
+              <!-- 用户列表
+          进入的时候拉取用户列表
+          有人加入的时候添加
+          有人退出以后删除 -->
+          </div>
+       <div class="talk_show" id="words">
 
+           </div>
+       <div class="talk_input">
+            <select class="whotalk" id="who">
+
+                 <option value="0">小哥哥说：</option>
+                 <option value="1">小姐姐说：</option>
+                </select>
+            <textarea class="talk_word" id="talkwords"></textarea>
+            <input type="button" value="发送" class="talk_sub" id="talksub">
+           </div>
+</div>
+      </div>
 </body>
 </html>
+<script src="http://91vh.com/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+    var send = (function() {
+        var Words = document.getElementById("words");
+        var Who = document.getElementById("who");
+        var talkWords = document.getElementById("talkwords");
+        var talkSub = document.getElementById("talksub");
+        return {
+
+            init: function() {
+
+                this.event();
+            },
+            event: function() {
+                var that = this;
+                talkSub.onclick = function() {
+                    that.chart();
+                }
+                talkWords.onkeydown = function(e) {
+                    var keyCode = e.keyCode || e.which;
+                    if(e.ctrlKey) {
+                        if(keyCode == 13) {
+                            that.chart();;
+                        }
+                    }
+                }
+            },
+            chart: function() {
+                var str = "";
+                if(talkWords.value == "") {
+                    alert("消息不能为空");
+                    return;
+                }
+                if(Who.value == 0) {
+                    str = '<div class="atalk">用户1：<span>' + talkWords.value + '</span></div>';
+                } else {
+                    str = '<div class="btalk"><span>' + talkWords.value + '</span></div>';
+                }
+                Words.innerHTML = Words.innerHTML + str;
+                talkWords.value = "";
+            }
+
+        }
+
+    }());
+
+
+    send.init();
+
+</script>

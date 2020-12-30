@@ -17,15 +17,13 @@ func Init(r *gin.Engine)  {
 		userRouter.GET("/list", user.List)
 		userRouter.GET("/groupslist", user.GroupsList)
 	}
-
-
-
-
 	// home
 	homeRouter := r.Group("/home")
 	{
 		homeRouter.GET("/index", home.Index)
+		homeRouter.GET("/room", home.Room)
 	}
+
 	//ws
 	r.GET("/ws",ws.WsPage)
 }
