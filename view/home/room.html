@@ -38,7 +38,6 @@
         }
         .talk_word {
             width: 420px;
-            height: 180px;
             padding: 0px;
             float: left;
             margin-left: 10px;
@@ -105,7 +104,7 @@
       <div class="talk_main">
           <div class="personnel-list">
               <ul class="personnel-list-ul">
-                  fasdf
+                  测试1群
               </ul>
               <!-- 在线列表 -->
               <!-- 用户列表
@@ -174,8 +173,98 @@
         }
 
     }());
-
-
     send.init();
+
+    $(function() {
+        var groups_id = 1        //群id
+        function load(){
+
+
+        }
+
+        function rand(minNum, maxNum) {
+            return Math.floor(Math.random()*(minNum - maxNum) + maxNum);
+        }
+        function sendId() {
+            let timeStamp = (new Date()).valueOf();
+            let randId = rand(100000, 999999);
+            let id = timeStamp + "-" + randId;
+            return id
+        }
+        function getUrlParam(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r!=null) return unescape(r[2]); return null; //返回参数值
+        }
+        var conn;
+        var msg = $("#msg");
+        var log = $("#log");
+        uid=getUrlParam("uid");
+        to_uid=getUrlParam("to_uid");
+        groups_id=getUrlParam("groups_id");
+        if (groups_id==null){
+            groups_id="0"
+        }
+        function appendLog(msg) {
+            var d = log[0]
+            var doScroll = d.scrollTop == d.scrollHeight - d.clientHeight;
+            msg.appendTo(log)
+            if (doScroll) {
+                d.scrollTop = d.scrollHeight - d.clientHeight;
+            }
+        }
+
+        $("#form").submit(function() {
+            if (!conn) {
+                return false;
+            }
+            if (!msg.val()) {
+                return false;
+            }
+            var json = {"seq": sendId(),"action":"sendusermsg","data":{"userId":uid,"appId":1,"msgType":"text","toUid":to_uid,"groupsId":groups_id,"message":msg.val()}}
+            // var json = {"sender":uid,"recipient":to_uid,"content":msg.val(),"typemsg":"1","appname":"1"}; //创建对象；
+            var jsonStr = JSON.stringify(json);       //转为JSON字符串
+
+            conn.send(jsonStr);
+            appendLog($("<div/>").text(msg.val()))
+            msg.val("");
+            return false
+        });
+
+        if (window["WebSocket"]) {
+            conn = new WebSocket("ws://localhost:8282/ws?uid="+uid+"&to_uid="+to_uid+"&appname=1");
+            conn.onopen = function(evt) {
+                console.log("Connection open ...");
+                console.log("用户准备登陆:" + uid);
+                conn.send('{"seq":"' + sendId() + '","action":"login","data":{"userId":"' + uid + '","appId":1,"toUid":"'+to_uid+'","groupsId":"'+groups_id+'"}}');
+
+                // 定时心跳
+                setInterval(heartbeat, 30 * 1000)
+            };
+            conn.onclose = function(evt) {
+                appendLog($("<div><b>Connection Closed.</b></div>"))
+            }
+
+            conn.onmessage = function(evt) {
+                console.log(evt.data)
+                obj = JSON.parse(evt.data);
+                if (obj.code !=undefined && obj.code!=200)
+                {
+                    appendLog($("<div/>").text("发送失败"))
+                }else{
+                    appendLog($("<div/>").text(evt.data))
+                }
+            }
+            // 心跳
+            function heartbeat() {
+                // console.log("定时心跳:" + uid);
+                conn.send('{"seq":"' + sendId() + '","action":"heartbeat","data":{}}');
+
+            }
+        } else {
+            appendLog($("<div><b>WebSockets Not Support.</b></div>"))
+        }
+    });
 
 </script>
