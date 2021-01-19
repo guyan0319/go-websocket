@@ -116,11 +116,11 @@
 
            </div>
        <div class="talk_input">
-            <select class="whotalk" id="who">
+            <!--select class="whotalk" id="who">
 
                  <option value="0">小哥哥说：</option>
                  <option value="1">小姐姐说：</option>
-                </select>
+                </-->
             <textarea class="talk_word" id="talkwords"></textarea>
             <input type="button" value="发送" class="talk_sub" id="talksub">
            </div>
@@ -173,15 +173,10 @@
         }
 
     }());
-    send.init();
+    //send.init();
 
     $(function() {
         var groups_id = 1        //群id
-        function load(){
-
-
-        }
-
         function rand(minNum, maxNum) {
             return Math.floor(Math.random()*(minNum - maxNum) + maxNum);
         }
@@ -200,11 +195,11 @@
         var conn;
         var msg = $("#msg");
         var log = $("#log");
-        uid=getUrlParam("uid");
-        to_uid=getUrlParam("to_uid");
-        groups_id=getUrlParam("groups_id");
+        var uid=getUrlParam("uid");
+        var to_uid=0
+        groups_id=getUrlParam("groups_id");//群id
         if (groups_id==null){
-            groups_id="0"
+            groups_id="1"
         }
         function appendLog(msg) {
             var d = log[0]
@@ -214,7 +209,6 @@
                 d.scrollTop = d.scrollHeight - d.clientHeight;
             }
         }
-
         $("#form").submit(function() {
             if (!conn) {
                 return false;
@@ -222,7 +216,7 @@
             if (!msg.val()) {
                 return false;
             }
-            var json = {"seq": sendId(),"action":"sendusermsg","data":{"userId":uid,"appId":1,"msgType":"text","toUid":to_uid,"groupsId":groups_id,"message":msg.val()}}
+            var json = {"seq": sendId(),"action":"sendusermsg","data":{"userId":uid,"appId":1,"msgType":"text","toUid":0,"groupsId":groups_id,"message":msg.val()}}
             // var json = {"sender":uid,"recipient":to_uid,"content":msg.val(),"typemsg":"1","appname":"1"}; //创建对象；
             var jsonStr = JSON.stringify(json);       //转为JSON字符串
 
@@ -245,7 +239,6 @@
             conn.onclose = function(evt) {
                 appendLog($("<div><b>Connection Closed.</b></div>"))
             }
-
             conn.onmessage = function(evt) {
                 console.log(evt.data)
                 obj = JSON.parse(evt.data);

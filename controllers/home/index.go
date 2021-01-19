@@ -17,3 +17,4 @@ func Room(c *gin.Context)  {
 		}
 		c.HTML(http.StatusOK, "room.html", data)
 }
+
