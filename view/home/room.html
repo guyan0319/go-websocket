@@ -130,49 +130,49 @@
 </html>
 <script src="http://91vh.com/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
-    var send = (function() {
-        var Words = document.getElementById("words");
-        var Who = document.getElementById("who");
-        var talkWords = document.getElementById("talkwords");
-        var talkSub = document.getElementById("talksub");
-        return {
-
-            init: function() {
-
-                this.event();
-            },
-            event: function() {
-                var that = this;
-                talkSub.onclick = function() {
-                    that.chart();
-                }
-                talkWords.onkeydown = function(e) {
-                    var keyCode = e.keyCode || e.which;
-                    if(e.ctrlKey) {
-                        if(keyCode == 13) {
-                            that.chart();;
-                        }
-                    }
-                }
-            },
-            chart: function() {
-                var str = "";
-                if(talkWords.value == "") {
-                    alert("消息不能为空");
-                    return;
-                }
-                if(Who.value == 0) {
-                    str = '<div class="atalk">用户1：<span>' + talkWords.value + '</span></div>';
-                } else {
-                    str = '<div class="btalk"><span>' + talkWords.value + '</span></div>';
-                }
-                Words.innerHTML = Words.innerHTML + str;
-                talkWords.value = "";
-            }
-
-        }
-
-    }());
+    // var send = (function() {
+    //     var Words = document.getElementById("words");
+    //     var Who = document.getElementById("who");
+    //     var talkWords = document.getElementById("talkwords");
+    //     var talkSub = document.getElementById("talksub");
+    //     return {
+    //
+    //         init: function() {
+    //
+    //             this.event();
+    //         },
+    //         event: function() {
+    //             var that = this;
+    //             talkSub.onclick = function() {
+    //                 that.chart();
+    //             }
+    //             talkWords.onkeydown = function(e) {
+    //                 var keyCode = e.keyCode || e.which;
+    //                 if(e.ctrlKey) {
+    //                     if(keyCode == 13) {
+    //                         that.chart();;
+    //                     }
+    //                 }
+    //             }
+    //         },
+    //         chart: function() {
+    //             var str = "";
+    //             if(talkWords.value == "") {
+    //                 alert("消息不能为空");
+    //                 return;
+    //             }
+    //             if(Who.value == 0) {
+    //                 str = '<div class="atalk">用户1：<span>' + talkWords.value + '</span></div>';
+    //             } else {
+    //                 str = '<div class="btalk"><span>' + talkWords.value + '</span></div>';
+    //             }
+    //             Words.innerHTML = Words.innerHTML + str;
+    //             talkWords.value = "";
+    //         }
+    //
+    //     }
+    //
+    // }());
     //send.init();
 
     $(function() {
@@ -194,7 +194,7 @@
         }
         var conn;
         var msg = $("#msg");
-        var log = $("#log");
+        var log = $("#words");
         var uid=getUrlParam("uid");
         var to_uid=0
         groups_id=getUrlParam("groups_id");//群id
@@ -245,6 +245,8 @@
                 if (obj.code !=undefined && obj.code!=200)
                 {
                     appendLog($("<div/>").text("发送失败"))
+                }else if(obj.action=="heartbeat"){
+
                 }else{
                     appendLog($("<div/>").text(evt.data))
                 }

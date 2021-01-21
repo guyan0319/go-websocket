@@ -140,10 +140,11 @@ func (manager *ClientManager) EventUnregister(client *Client) {
 		userOnline.LogOut()
 		cache.SetUserOnlineInfo(client.GetKey(), userOnline)
 	}
-
+	fmt.Println(client.Send)
+	fmt.Println("ok")
 	// 关闭 chan
-	close(client.Send)
-
+	//close(client.Send)
+	client.close()
 	fmt.Println("EventUnregister 用户断开连接", client.Addr, client.AppId, client.UserId)
 
 	if client.UserId != "" {
