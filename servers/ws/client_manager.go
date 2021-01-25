@@ -89,21 +89,14 @@ func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 		fmt.Println("接收方不存在", message.AppId, message.UserId)
 		return
 	}
-	//一对一发送
-	if message.GroupsId=="0"{
-		SendUserMessageAll(message,msgs.MessageActionMsg)
-	}else{
-		//聊天室广播
-
-
-
-	}
+	SendUserMessageAll(message,msgs.MessageActionMsg)
 }
 
 // 用户建立连接事件
 func (manager *ClientManager) EventRegister(client *Client) {
 	manager.AddClients(client)
 	fmt.Println("EventRegister 用户建立连接", client.Addr)
+
 	client.Send <- []byte("连接成功")
 }
 
@@ -118,9 +111,7 @@ func (manager *ClientManager) EventLogin(login *login) {
 		userKey := login.GetKey()
 		manager.AddUsers(userKey, login.Client)
 	}
-
 	fmt.Println("EventLogin 用户登录", client.Addr, login.AppId, login.UserId)
-
 	//msgId := GetMsgIdTime()
 	//SendUserMessageAll(login.AppId, login.UserId, msgId, msgs.MessageActionEnter, "哈喽~")
 }
@@ -140,16 +131,16 @@ func (manager *ClientManager) EventUnregister(client *Client) {
 		userOnline.LogOut()
 		cache.SetUserOnlineInfo(client.GetKey(), userOnline)
 	}
-	fmt.Println(client.Send)
-	fmt.Println("ok")
-	// 关闭 chan
-	//close(client.Send)
-	client.close()
 	fmt.Println("EventUnregister 用户断开连接", client.Addr, client.AppId, client.UserId)
-
 	if client.UserId != "" {
-		//msgId := GetMsgIdTime()
-		//_,_=SendUserMessageAll(client.AppId, client.UserId,msgId, msgs.MessageActionExit, "用户已经离开~")
+		var message *msgs.SendUserMsg
+		message.AppId = client.AppId
+		message.UserId = client.UserId
+		message.GroupsId = client.GroupsId
+		message.MsgId = GetMsgIdTime()
+		message.Message = "用户已经离开"
+		message.MsgType = msgs.MessageTypeText
+		_,_=SendUserMessageAll(message,msgs.MessageActionExit)
 	}
 }
 
