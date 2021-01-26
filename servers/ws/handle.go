@@ -90,6 +90,7 @@ func Handle(client *Client, message []byte) {
 	}
 
 	client.SendMsg(headByte)
+	fmt.Println(responseHead)
 	fmt.Println("响应：", client.Addr, client.AppId, client.UserId, "action", action, "code", code)
 
 	return

@@ -8,7 +8,7 @@ const (
 	MessageTypeVideo = "video"
 	MessageTypeVoice = "voice"
 
-	MessageActionMsg   = "msg"
+	MessageActionMsg   = "sendmsg"
 	MessageActionEnter = "enter"
 	MessageActionExit  = "exit"
 	MessageActionHeartbeat  = "heartbeat"

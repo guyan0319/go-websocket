@@ -56,7 +56,7 @@ func SendUserMessageLocal(appId uint32, userId string, data string) (sendResults
 }
 // 给全体用户发消息
 func SendUserMessageAll(msg *msgs.SendUserMsg,action string) (sendResults bool, err error) {
-	if msg.GroupsId!="0"{
+	if msg.GroupsId=="0"{
 		//1对1发送
 		return SendUserMessage(msg,action)
 	}

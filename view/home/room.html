@@ -116,13 +116,16 @@
 
            </div>
        <div class="talk_input">
+
             <!--select class="whotalk" id="who">
 
                  <option value="0">小哥哥说：</option>
                  <option value="1">小姐姐说：</option>
                 </-->
             <textarea class="talk_word" id="talkwords"></textarea>
-            <input type="button" value="发送" class="talk_sub" id="talksub">
+           <form id="form">
+            <input type="submit" value="发送" class="msg" id="msg">
+           </form>
            </div>
 </div>
       </div>
@@ -130,51 +133,6 @@
 </html>
 <script src="http://91vh.com/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
-    // var send = (function() {
-    //     var Words = document.getElementById("words");
-    //     var Who = document.getElementById("who");
-    //     var talkWords = document.getElementById("talkwords");
-    //     var talkSub = document.getElementById("talksub");
-    //     return {
-    //
-    //         init: function() {
-    //
-    //             this.event();
-    //         },
-    //         event: function() {
-    //             var that = this;
-    //             talkSub.onclick = function() {
-    //                 that.chart();
-    //             }
-    //             talkWords.onkeydown = function(e) {
-    //                 var keyCode = e.keyCode || e.which;
-    //                 if(e.ctrlKey) {
-    //                     if(keyCode == 13) {
-    //                         that.chart();;
-    //                     }
-    //                 }
-    //             }
-    //         },
-    //         chart: function() {
-    //             var str = "";
-    //             if(talkWords.value == "") {
-    //                 alert("消息不能为空");
-    //                 return;
-    //             }
-    //             if(Who.value == 0) {
-    //                 str = '<div class="atalk">用户1：<span>' + talkWords.value + '</span></div>';
-    //             } else {
-    //                 str = '<div class="btalk"><span>' + talkWords.value + '</span></div>';
-    //             }
-    //             Words.innerHTML = Words.innerHTML + str;
-    //             talkWords.value = "";
-    //         }
-    //
-    //     }
-    //
-    // }());
-    //send.init();
-
     $(function() {
         var groups_id = 1        //群id
         function rand(minNum, maxNum) {
@@ -193,7 +151,7 @@
             if (r!=null) return unescape(r[2]); return null; //返回参数值
         }
         var conn;
-        var msg = $("#msg");
+        var msg = $("#talkwords");
         var log = $("#words");
         var uid=getUrlParam("uid");
         var to_uid=0
@@ -216,18 +174,15 @@
             if (!msg.val()) {
                 return false;
             }
-            var json = {"seq": sendId(),"action":"sendusermsg","data":{"userId":uid,"appId":1,"msgType":"text","toUid":0,"groupsId":groups_id,"message":msg.val()}}
-            // var json = {"sender":uid,"recipient":to_uid,"content":msg.val(),"typemsg":"1","appname":"1"}; //创建对象；
+            var json = {"seq": sendId(),"action":"sendmsg","data":{"userId":uid,"appId":1,"msgType":"text","toUid":"0","groupsId":groups_id,"message":msg.val()}}
             var jsonStr = JSON.stringify(json);       //转为JSON字符串
-
             conn.send(jsonStr);
-            appendLog($("<div/>").text(msg.val()))
             msg.val("");
             return false
         });
 
         if (window["WebSocket"]) {
-            conn = new WebSocket("ws://localhost:8282/ws?uid="+uid+"&to_uid="+to_uid+"&appname=1");
+            conn = new WebSocket("ws://localhost:8282/ws?uid="+uid+"&groups_id="+groups_id+"&appname=1");
             conn.onopen = function(evt) {
                 console.log("Connection open ...");
                 console.log("用户准备登陆:" + uid);
@@ -245,17 +200,24 @@
                 if (obj.code !=undefined && obj.code!=200)
                 {
                     appendLog($("<div/>").text("发送失败"))
-                }else if(obj.action=="heartbeat"){
+                }else {
 
-                }else{
-                    appendLog($("<div/>").text(evt.data))
+                    if (obj.data!=null && obj.data.action=="sendmsg")
+                    {
+                        data = obj.data
+                        if (data.from ==uid)
+                        {
+                            appendLog($("<div/>").html('<div class="btalk"><span>' + data.content + '</span></div>'))
+                        }else{
+                            appendLog($("<div/>").html('<div class="atalk">用户'+data.from+'：<span>' + data.content + '</span></div>'))
+                        }
+                    }
                 }
             }
             // 心跳
             function heartbeat() {
                 // console.log("定时心跳:" + uid);
                 conn.send('{"seq":"' + sendId() + '","action":"heartbeat","data":{}}');
-
             }
         } else {
             appendLog($("<div><b>WebSockets Not Support.</b></div>"))

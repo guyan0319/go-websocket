@@ -75,6 +75,7 @@ func (manager *ClientManager) DelUsers(key string) {
 func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
 	for conn := range manager.Clients {
 		if conn != ignore {
+			fmt.Println(message,"aaaa")
 			conn.SendMsg(message)
 		}
 	}
@@ -96,8 +97,8 @@ func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 func (manager *ClientManager) EventRegister(client *Client) {
 	manager.AddClients(client)
 	fmt.Println("EventRegister 用户建立连接", client.Addr)
-
-	client.Send <- []byte("连接成功")
+	data := msgs.GetMsgData(msgs.MessageActionEnter,GetMsgIdTime(), msgs.MessageTypeText,"连接成功",client.ToUid,client.UserId,GetMsgTime())
+	client.Send <- []byte(data)
 }
 
 // 用户登录
@@ -134,6 +135,8 @@ func (manager *ClientManager) EventUnregister(client *Client) {
 	fmt.Println("EventUnregister 用户断开连接", client.Addr, client.AppId, client.UserId)
 	if client.UserId != "" {
 		var message *msgs.SendUserMsg
+		message = new(msgs.SendUserMsg)
+		fmt.Println(client,"zheli")
 		message.AppId = client.AppId
 		message.UserId = client.UserId
 		message.GroupsId = client.GroupsId
@@ -240,6 +243,7 @@ func AllSendMessages(appId uint32, userId string, data string) {
 func SendMessages(appId uint32, userId string, data string) {
 	client := Manager.GetUserClient(appId, userId)
 	if client!=nil {
+		fmt.Println(data,"bbbb")
 		client.SendMsg([]byte(data))
 	}
 }
