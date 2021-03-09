@@ -16,7 +16,6 @@ func main() {
 	//_,groups:=model.GetGroupsAll("1")
 	//fmt.Println(groups)
 	r := gin.Default()
-	//
 	// 初始化web路由
 	routers.Init(r)
 	//ws路由
