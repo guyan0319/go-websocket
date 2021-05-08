@@ -33,7 +33,6 @@ var Manager = ClientManager{
 func (manager *ClientManager) AddClients(client *Client) {
 	manager.ClientsLock.Lock()
 	defer manager.ClientsLock.Unlock()
-
 	manager.Clients[client] = true
 }
 
@@ -81,7 +80,7 @@ func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
 	}
 }
 
-// 用户建立连接事件
+// 发送用户信息时间
 func (manager *ClientManager) EventSendUserMsg(message *msgs.SendUserMsg) {
 	manager.ClientsLock.RLock()
 	defer manager.ClientsLock.RUnlock()

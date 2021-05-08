@@ -28,11 +28,9 @@ func InAppIds(appId uint32) (inAppId bool) {
 	for _, value := range GetAppIds() {
 		if value == appId {
 			inAppId = true
-
 			return
 		}
 	}
-
 	return
 }
 
