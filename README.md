@@ -47,7 +47,7 @@ rpcx：服务器建rpc通信
 
 ###   快速搭建
 
-  1、拉取代码
+#####   1、拉取代码
 
 ```
 git clone https://github.com/guyan0319/go-websocket.git
@@ -55,13 +55,13 @@ git clone https://github.com/guyan0319/go-websocket.git
 
 注：这里代码版本控制使用[go modules](https://github.com/guyan0319/golang_development_notes/blob/master/zh/1.10.md) 
 
-2、运行系统
+##### 2、运行系统
 
 ```
 go run main.go
 ```
 
-3、配置nginx
+##### 3、配置nginx
 
 ```
 upstream  go-http
@@ -102,19 +102,31 @@ server {
 
 ```
 
-4、测试一对一聊天
+##### 4、测试一对一聊天
 
-浏览器打开两个窗口访问http://ws.test/home/index?uid=1&to_uid=2
+浏览器打开两个窗口访问
+
+http://ws.test/home/index?uid=1&to_uid=2
 
 http://ws.test/home/index?uid=2&to_uid=1
 
-5、测试群聊天
+![](https://github.com/guyan0319/go-websocket/blob/main/doc/test1.1.png?raw=true)
 
+![](https://github.com/guyan0319/go-websocket/blob/main/doc/test1.2.png?raw=true)
 
+##### 5、测试群聊天
 
+浏览器打开两个窗口访问
 
+http://ws.test/home/room?uid=1
 
-相关资料：
+http://ws.test/home/room?uid=2
+
+![](https://github.com/guyan0319/go-websocket/blob/main/doc/test2.1.png?raw=true)
+
+![](https://github.com/guyan0319/go-websocket/blob/main/doc/test2.2.png?raw=true)
+
+##### 相关资料：
 
 github.com/gorilla/websocket
 
@@ -125,4 +137,3 @@ https://doc.rpcx.io/
 https://github.com/link1st/gowebsocket
 
 https://segmentfault.com/a/1190000018712908
-
